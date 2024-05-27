@@ -28,5 +28,4 @@ public class CategoryAPI {
         return ResponseEntity.ok(list);
     }
 
-
 }

@@ -2,10 +2,7 @@ package online.fivediamond.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.entity.Account;
-import online.fivediamond.be.model.AccountResponse;
-import online.fivediamond.be.model.EmailDetail;
-import online.fivediamond.be.model.LoginRequest;
-import online.fivediamond.be.model.RegisterRequest;
+import online.fivediamond.be.model.*;
 import online.fivediamond.be.service.AuthenticationService;
 import online.fivediamond.be.service.EmailService;
 import online.fivediamond.be.service.TokenService;
@@ -14,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,10 +64,10 @@ public class AuthenticationAPI {
 
     @PostMapping("login")
     public AccountResponse login(@RequestBody LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),
-                loginRequest.getPassword()
-        ));
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                loginRequest.getUsername(),
+//                loginRequest.getPassword()
+//        ));
         Account account = authenticationService.login(loginRequest);
         String token = tokenService.generateToken(account);
         AccountResponse accountResponse = new AccountResponse();
@@ -77,4 +75,5 @@ public class AuthenticationAPI {
         accountResponse.setToken(token);
         return accountResponse;
     }
+
 }

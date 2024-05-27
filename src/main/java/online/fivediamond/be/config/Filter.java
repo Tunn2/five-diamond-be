@@ -41,13 +41,15 @@ public class Filter extends OncePerRequestFilter {
             "/api/login",
             "/api/register",
             "/api/send-mail",
-            "/api/accounts"
+            "/api/accounts",
+            "/api/password"
     );
 
     private boolean isPermitted(String uri) {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         return AUTH_PERMISSION.stream().anyMatch(pattern -> pathMatcher.match(pattern, uri));
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI(); //login, register

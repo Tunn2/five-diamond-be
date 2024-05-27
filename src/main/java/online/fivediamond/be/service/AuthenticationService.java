@@ -54,13 +54,12 @@ public class AuthenticationService implements UserDetailsService {
             ));
 
         //=> account chuan
-        return authenticationRepository.findAccountByPhone(loginRequest.getUsername());
+        return authenticationRepository.findAccountByUsername(loginRequest.getUsername());
     }
 
     @Override
-    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        return authenticationRepository.findAccountByPhone(phone);
+    public Account loadUserByUsername(String username) throws UsernameNotFoundException {
+        return authenticationRepository.findAccountByUsername(username);
     }
-
 
 }
