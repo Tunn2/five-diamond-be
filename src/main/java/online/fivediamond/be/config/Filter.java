@@ -42,14 +42,17 @@ public class Filter extends OncePerRequestFilter {
             "/api/register",
             "/api/send-mail",
             "/api/accounts",
-            "/api/password"
+            "/api/diamond",
+            "/api/diamond/{id}",
+            "/api/product",
+            "/api/product/{id}"
+
     );
 
     private boolean isPermitted(String uri) {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         return AUTH_PERMISSION.stream().anyMatch(pattern -> pathMatcher.match(pattern, uri));
     }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI(); //login, register
@@ -58,6 +61,7 @@ public class Filter extends OncePerRequestFilter {
             filterChain.doFilter(request, response); // cho phép truy cập dô controller
         } else {
             String token = getToken(request);
+            System.out.println(token);
             if (token == null) {
                 resolver.resolveException(request, response, null, new AuthException("Empty token!"));
                 return;

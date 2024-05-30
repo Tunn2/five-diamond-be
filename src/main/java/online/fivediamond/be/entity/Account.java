@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,14 +24,16 @@ public class Account implements UserDetails {
 
     String firstname;
     String lastname;
-    String email;
-    String phone;
-    String address;
-    String sex;
 
     @Column(unique = true)
-    String username;
+    String email;
 
+    String phone;
+    String address;
+    String gender;
+    String role;
+    double rewardPoint;
+    Date dob;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
@@ -41,7 +44,7 @@ public class Account implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.email;
     }
 
     @Override

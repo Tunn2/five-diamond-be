@@ -2,6 +2,8 @@ package online.fivediamond.be.model;
 
 import lombok.Data;
 
+import java.sql.Date;
+
 @Data
 public class RegisterRequest {
     String firstname;
@@ -9,7 +11,8 @@ public class RegisterRequest {
     String email;
     String phone;
     String address;
-    String sex;
-    String username;
+    Date dob;
+    String role = "customer";
+    String gender;
     String password;
 }
