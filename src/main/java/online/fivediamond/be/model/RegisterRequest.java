@@ -9,7 +9,7 @@ public class RegisterRequest {
     String email;
     String phone;
     String address;
-    String sex;
-    String username;
+    String role = "customer";
+    String gender;
     String password;
 }

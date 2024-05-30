@@ -27,9 +27,6 @@ public class AuthenticationAPI {
     //nhan request tu FE
 
     @Autowired
-    TokenService tokenService;
-
-    @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
@@ -65,16 +62,10 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("login")
-    public AccountResponse login(@RequestBody LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),
-                loginRequest.getPassword()
-        ));
+    public Account login(@RequestBody LoginRequest loginRequest) {
         Account account = authenticationService.login(loginRequest);
-        String token = tokenService.generateToken(account);
-        AccountResponse accountResponse = new AccountResponse();
-        accountResponse.setUsername(account.getUsername());
-        accountResponse.setToken(token);
-        return accountResponse;
+        return account;
     }
+
+
 }

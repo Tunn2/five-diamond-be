@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -13,12 +14,14 @@ import java.sql.SQLIntegrityConstraintViolationException;
 public class APIHandleException {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleNotAllowException(BadCredentialsException ex) {
-        return new ResponseEntity<>("Username or password not correct", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Email or password not correct", HttpStatus.FORBIDDEN);
     }
 
+
+
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<Object> handleDuplicateUsername(SQLIntegrityConstraintViolationException ex) {
-        return new ResponseEntity<>("Duplicate username!!!", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> handleDuplicateEmail(SQLIntegrityConstraintViolationException ex) {
+        return new ResponseEntity<>("Email is resited!!!", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthException.class)
