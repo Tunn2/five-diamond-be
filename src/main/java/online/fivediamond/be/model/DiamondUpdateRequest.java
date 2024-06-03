@@ -16,6 +16,7 @@ public class DiamondUpdateRequest {
     double cost;
     double price;
     Date importDate;
+    double size;
     String shape;
     double carat;
     String color;

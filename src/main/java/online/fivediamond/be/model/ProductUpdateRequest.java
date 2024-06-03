@@ -7,13 +7,15 @@ import java.sql.Date;
 
 @Data
 public class ProductUpdateRequest {
-    String name;
+
     String imgURL1;
     String imgURL2;
     String imgURL3;
     String imgURL4;
     String description;
-    long categoryID;
+    String type;
+    String metal;
+    String karat;
     Date importDate;
     @Column(unique = true)
     long giaReportNumber;

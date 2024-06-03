@@ -2,10 +2,7 @@ package online.fivediamond.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.entity.Account;
-import online.fivediamond.be.model.AccountResponse;
-import online.fivediamond.be.model.EmailDetail;
-import online.fivediamond.be.model.LoginRequest;
-import online.fivediamond.be.model.RegisterRequest;
+import online.fivediamond.be.model.*;
 import online.fivediamond.be.service.AuthenticationService;
 import online.fivediamond.be.service.EmailService;
 import online.fivediamond.be.service.TokenService;
@@ -68,4 +65,21 @@ public class AuthenticationAPI {
         AccountResponse account = authenticationService.login(loginRequest);
         return account;
     }
+
+    @PostMapping("login-google")
+    public ResponseEntity<AccountResponse> loginGg(@RequestBody LoginGoogleRequest loginGoogleRequest) {
+        return ResponseEntity.ok(authenticationService.loginGoogle(loginGoogleRequest));
+    }
+
+    @PostMapping("forgot-password")
+    public void forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        authenticationService.forgotPassword(forgotPasswordRequest);
+    }
+
+    @PostMapping("reset-password")
+    public void loginGg(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        authenticationService.resetPassword(resetPasswordRequest);
+    }
+
+
 }

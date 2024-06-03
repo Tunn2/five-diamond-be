@@ -17,6 +17,9 @@ public class ProductService {
     public Product createProduct(ProductCreationRequest request) {
         Product product = new Product();
 
+        product.setType(request.getType());
+        product.setMetal(request.getMetal());
+        product.setKarat(request.getKarat());
         product.setGiaReportNumber(request.getGiaReportNumber());
         product.setImgURL1(request.getImgURL1());
         product.setImgURL2(request.getImgURL2());
@@ -37,6 +40,7 @@ public class ProductService {
 
     public Product updateProductByID(long id, ProductUpdateRequest request) {
         Product product = getProductByID(id);
+
         product.setGiaReportNumber(request.getGiaReportNumber());
         product.setImgURL1(request.getImgURL1());
         product.setImgURL2(request.getImgURL2());
@@ -44,12 +48,16 @@ public class ProductService {
         product.setImgURL4(request.getImgURL4());
         product.setCost(request.getCost());
         product.setPrice(request.getPrice());
+        product.setType(request.getType());
+        product.setMetal(request.getMetal());
+        product.setKarat(request.getKarat());
         product.setImportDate(request.getImportDate());
         product.setShape(request.getShape());
         product.setCarat(request.getCarat());
         product.setColor(request.getColor());
         product.setClarity(request.getClarity());
         product.setCut(request.getCut());
+
         product.setDateOfIssues(request.getDateOfIssues());
         return productRepository.save(product);
     }

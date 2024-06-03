@@ -1,15 +1,18 @@
 package online.fivediamond.be.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import online.fivediamond.be.entity.Account;
 import online.fivediamond.be.exception.AuthException;
-import online.fivediamond.be.model.AccountResponse;
-import online.fivediamond.be.model.LoginRequest;
-import online.fivediamond.be.model.RegisterRequest;
+import online.fivediamond.be.exception.BadRequestException;
+import online.fivediamond.be.model.*;
 import online.fivediamond.be.repository.AuthenticationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +35,8 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     TokenService tokenService;
@@ -88,5 +93,70 @@ try{
         return authenticationRepository.findAccountByEmail(email);
     }
 
+    public AccountResponse loginGoogle(LoginGoogleRequest loginGoogleRequest) {
+        AccountResponse accountResponse = new AccountResponse();
+        try {
+            FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(loginGoogleRequest.getToken());
+            String email = firebaseToken.getEmail();
+            Account account = authenticationRepository.findAccountByEmail(email);
+            if(account == null) {
+                account = new Account();
+                account.setFirstname(firebaseToken.getName());
+                account.setEmail(email);
+                account.setRole("customer");
+                account = authenticationRepository.save(account);
+            }
+            String token = tokenService.generateToken(account);
+            accountResponse.setId(account.getId());
+            accountResponse.setEmail(account.getEmail());
+            accountResponse.setToken(token);
+            accountResponse.setPhone(account.getPhone());
+            accountResponse.setDob(account.getDob());
+            accountResponse.setFirstname(account.getFirstname());
+            accountResponse.setLastname(account.getLastname());
+            accountResponse.setRole(account.getRole());
+            accountResponse.setGender(account.getGender());
+            accountResponse.setRewardPoint(account.getRewardPoint());
+            accountResponse.setAddress(account.getAddress());
+        } catch (FirebaseAuthException ex) {
+            ex.printStackTrace();
+        }
 
+        return accountResponse;
+    }
+
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        Account account = authenticationRepository.findAccountByEmail(forgotPasswordRequest.getEmail());
+        if(account == null) {
+            try {
+                throw new BadRequestException("Email not found");
+            }catch (RuntimeException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setFullName(account.getFirstname());
+        emailDetail.setRecipient(account.getEmail());
+        emailDetail.setSubject("Reset password for account: " + account.getEmail());
+        emailDetail.setMsgBody("");
+        emailDetail.setButtonValue("Reset password");
+        emailDetail.setLink("http://157.245.145.162/doi-mat-khau?token=" + tokenService.generateToken(account));
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendMailTemplate(emailDetail);
+            }
+        };
+        new Thread(r).start();
+    }
+
+    public Account getCurrentAccount() {
+        return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        Account account = getCurrentAccount();
+        account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
+        authenticationRepository.save(account);
+    }
 }
