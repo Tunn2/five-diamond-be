@@ -25,6 +25,7 @@ public class DiamondService {
         diamond.setCost(request.getCost());
         diamond.setPrice(request.getPrice());
         diamond.setImportDate(request.getImportDate());
+        diamond.setSize(request.getSize());
         diamond.setShape(request.getShape());
         diamond.setCarat(request.getCarat());
         diamond.setColor(request.getColor());
