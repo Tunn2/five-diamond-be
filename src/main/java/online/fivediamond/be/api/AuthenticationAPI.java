@@ -23,8 +23,6 @@ public class AuthenticationAPI {
     AuthenticationService authenticationService;
     //nhan request tu FE
 
-
-
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -34,7 +32,6 @@ public class AuthenticationAPI {
     @PostMapping("register")
     public ResponseEntity register(@RequestBody RegisterRequest registerRequest) {
         Account account = authenticationService.register(registerRequest);
-        //account da dc luu xuong db
         return ResponseEntity.ok(account);
     }
 

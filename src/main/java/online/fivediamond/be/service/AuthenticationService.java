@@ -61,16 +61,16 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public AccountResponse login(LoginRequest loginRequest) {
-      Authentication  authentication =null;
-try{
-    authentication=   authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-            loginRequest.getEmail(),
-            loginRequest.getPassword()
-    ));
-} catch (Exception e) {
-    throw new AuthException("Wrong Email Or Password");
-}
-    Account account = (Account) authentication.getPrincipal();
+        Authentication authentication = null;
+        try{
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+            ));
+        } catch (Exception e) {
+            throw new AuthException("Wrong Email Or Password");
+        }
+        Account account = (Account) authentication.getPrincipal();
 
         String token = tokenService.generateToken(account);
         AccountResponse accountResponse = new AccountResponse();

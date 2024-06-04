@@ -57,7 +57,6 @@ public class ProductService {
         product.setColor(request.getColor());
         product.setClarity(request.getClarity());
         product.setCut(request.getCut());
-
         product.setDateOfIssues(request.getDateOfIssues());
         return productRepository.save(product);
     }

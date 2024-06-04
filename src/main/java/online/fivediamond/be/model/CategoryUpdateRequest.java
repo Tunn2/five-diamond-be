@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
-public class CategoryCreationRequest {
+public class CategoryUpdateRequest {
 
     String name;
     String description;
