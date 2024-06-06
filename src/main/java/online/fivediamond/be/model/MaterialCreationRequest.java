@@ -5,20 +5,25 @@ import online.fivediamond.be.enums.Type;
 
 @Data
 public class MaterialCreationRequest {
-    long giaReportNumber;
+    //diamond
     String shape;
     double size;
     String color;
     String clarity;
     double carat;
     String cut;
-    String imgURL;
-    String name;
-    Type type;
+    long certificateID;
+    String origin;
+
+    //vo kim cuong
     String metal;
     String karat;
-    double weight;
+    String typeOfSub = "Diamond";
+    double weightOfSub;
     int quantityOfSub;
-    int quantity;
+
+    //diamond va vo kim cuong
     double price;
+    String imgURL;
+    Type type;
 }

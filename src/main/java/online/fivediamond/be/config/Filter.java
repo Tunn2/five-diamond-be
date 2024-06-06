@@ -42,13 +42,15 @@ public class Filter extends OncePerRequestFilter {
             "/api/register",
             "/api/send-mail",
             "/api/accounts",
-            "/api/diamond",
-            "/api/diamond/{id}",
+            "/api/material",
+            "/api/material/{id}",
             "/api/product",
             "/api/product/{id}",
             "/api/forgot-password",
             "/api/category",
-            "/api/category/{id}"
+            "/api/category/{id}",
+            "/api/certificate",
+            "/api/certificate/{id}"
 
     );
 

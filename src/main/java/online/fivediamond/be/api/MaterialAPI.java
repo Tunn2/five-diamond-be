@@ -1,11 +1,5 @@
 package online.fivediamond.be.api;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
 import online.fivediamond.be.entity.Material;
 import online.fivediamond.be.model.MaterialCreationRequest;
 import online.fivediamond.be.model.MaterialUpdateRequest;

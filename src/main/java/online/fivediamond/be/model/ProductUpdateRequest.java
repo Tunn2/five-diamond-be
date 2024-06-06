@@ -4,27 +4,14 @@ import jakarta.persistence.Column;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class ProductUpdateRequest {
-
-    String imgURL1;
-    String imgURL2;
-    String imgURL3;
-    String imgURL4;
-    String description;
-    String type;
-    String metal;
-    String karat;
-    Date importDate;
-    @Column(unique = true)
-    long giaReportNumber;
-    String shape;
-    double carat;
-    String color;
-    String clarity;
-    String cut;
-    Date dateOfIssues;
-    double cost;
-    double price;
+    double priceRate;
+    String imgURL;
+    double weight;
+    List<Long> materialID;
+    long categoryID;
+    boolean isDeleted = false;
 }

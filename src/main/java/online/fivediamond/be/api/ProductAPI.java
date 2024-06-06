@@ -31,12 +31,12 @@ public class ProductAPI {
         return ResponseEntity.ok(product);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity updateProductByID(@PathVariable long id, @RequestBody ProductUpdateRequest request) {
-        Product  product = productService.updateProductByID(id, request);
-        return ResponseEntity.ok(product);
-    }
-
+//    @PutMapping("{id}")
+//    public ResponseEntity updateProductByID(@PathVariable long id, @RequestBody ProductUpdateRequest request) {
+//        Product  product = productService.updateProductByID(id, request);
+//        return ResponseEntity.ok(product);
+//    }
+//
     @DeleteMapping("{id}")
     public String deleteProductByID(@PathVariable long id) {
         productService.deleteProductByID(id);

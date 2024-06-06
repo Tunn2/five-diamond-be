@@ -5,7 +5,6 @@ import online.fivediamond.be.enums.Type;
 
 @Data
 public class MaterialUpdateRequest {
-    long giaReportNumber;
     String shape;
     double size;
     String color;
@@ -13,12 +12,14 @@ public class MaterialUpdateRequest {
     double carat;
     String cut;
     String imgURL;
-    String name;
+    long certificateID;
+    String origin;
     Type type;
     String metal;
     String karat;
     double weight;
-    int quantityOfSub;
-    int quantity;
     double price;
+    String typeOfSub = "Diamond";
+    double weightOfSub;
+    int quantityOfSub;
 }

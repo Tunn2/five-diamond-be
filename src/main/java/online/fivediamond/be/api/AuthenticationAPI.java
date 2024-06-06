@@ -77,6 +77,4 @@ public class AuthenticationAPI {
     public void loginGg(@RequestBody ResetPasswordRequest resetPasswordRequest) {
         authenticationService.resetPassword(resetPasswordRequest);
     }
-
-
 }
