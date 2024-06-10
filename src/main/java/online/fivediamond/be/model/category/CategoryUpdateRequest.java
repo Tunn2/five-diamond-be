@@ -1,6 +1,5 @@
-package online.fivediamond.be.model;
+package online.fivediamond.be.model.category;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data

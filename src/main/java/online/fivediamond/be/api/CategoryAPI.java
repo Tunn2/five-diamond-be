@@ -1,8 +1,8 @@
 package online.fivediamond.be.api;
 
 import online.fivediamond.be.entity.Category;
-import online.fivediamond.be.model.CategoryCreationRequest;
-import online.fivediamond.be.model.CategoryUpdateRequest;
+import online.fivediamond.be.model.category.CategoryCreationRequest;
+import online.fivediamond.be.model.category.CategoryUpdateRequest;
 import online.fivediamond.be.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/category")
+@CrossOrigin("*")
+
 public class CategoryAPI {
     @Autowired
     CategoryService categoryService;

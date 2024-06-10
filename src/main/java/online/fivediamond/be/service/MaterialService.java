@@ -2,8 +2,9 @@ package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.Certificate;
 import online.fivediamond.be.entity.Material;
-import online.fivediamond.be.model.MaterialCreationRequest;
-import online.fivediamond.be.model.MaterialUpdateRequest;
+import online.fivediamond.be.enums.Type;
+import online.fivediamond.be.model.material.MaterialCreationRequest;
+import online.fivediamond.be.model.material.MaterialUpdateRequest;
 import online.fivediamond.be.repository.CertificateRepository;
 import online.fivediamond.be.repository.MaterialRepository;
 import org.slf4j.Logger;
@@ -30,22 +31,28 @@ public class MaterialService {
         }catch (Exception ex) {
             log.error(ex.getMessage());
         }
-        material.setCertificate(certificate);
-        material.setShape(request.getShape());
-        material.setSize(request.getSize());
-        material.setColor(request.getColor());
-        material.setClarity(request.getClarity());
-        material.setCarat(request.getCarat());
-        material.setCut(request.getCut());
-        material.setOrigin(request.getOrigin());
-        material.setImgURL(request.getImgURL());
-        material.setType(request.getType());
-        material.setMetal(request.getMetal());
-        material.setKarat(request.getKarat());
-        material.setPrice(request.getPrice());
-        material.setTypeOfSub(request.getTypeOfSub());
-        material.setQuantityOfSub(request.getQuantityOfSub());
-        material.setWeightOfSub(request.getWeightOfSub());
+
+        if(request.getType().toString().equals(Type.DIAMOND.toString())) {
+            material.setCertificate(certificate);
+            material.setShape(request.getShape());
+            material.setSize(request.getSize());
+            material.setColor(request.getColor());
+            material.setClarity(request.getClarity());
+            material.setCarat(request.getCarat());
+            material.setCut(request.getCut());
+            material.setOrigin(request.getOrigin());
+            material.setImgURL(request.getImgURL());
+            material.setPrice(request.getPrice());
+            material.setType(request.getType());
+        } else {
+            material.setType(request.getType());
+            material.setMetal(request.getMetal());
+            material.setKarat(request.getKarat());
+            material.setPrice(request.getPrice());
+            material.setTypeOfSub(request.getTypeOfSub());
+            material.setQuantityOfSub(request.getQuantityOfSub());
+            material.setCaratOfSub(request.getCaratOfSub());
+        }
         return materialRepository.save(material);
     }
 
@@ -72,7 +79,7 @@ public class MaterialService {
         material.setPrice(request.getPrice());
         material.setTypeOfSub(request.getTypeOfSub());
         material.setQuantityOfSub(request.getQuantityOfSub());
-        material.setWeightOfSub(request.getWeightOfSub());
+        material.setCaratOfSub(request.getCaratOfSub());
         return materialRepository.save(material);
     }
 
@@ -84,7 +91,13 @@ public class MaterialService {
         return materialRepository.findAll();
     }
 
+
     public Material getMaterialByID(long id) {
         return materialRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
+
+    public List<Material> getDiamondsNotYetUsed() {
+        return materialRepository.findByNotYetUsed();
+    }
+
 }

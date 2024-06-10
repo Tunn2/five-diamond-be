@@ -1,9 +1,7 @@
-package online.fivediamond.be.model;
+package online.fivediamond.be.model.product;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
-import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -13,5 +11,5 @@ public class ProductUpdateRequest {
     double weight;
     List<Long> materialID;
     long categoryID;
-    boolean isDeleted = false;
+    boolean isSpecial;
 }

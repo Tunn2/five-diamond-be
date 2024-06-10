@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import online.fivediamond.be.enums.Gender;
+import online.fivediamond.be.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.sql.Date;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,8 +32,11 @@ public class Account implements UserDetails {
 
     String phone;
     String address;
-    String gender;
-    String role;
+    @Enumerated(EnumType.STRING)
+    Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    Role role;
     double rewardPoint;
     Date dob;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

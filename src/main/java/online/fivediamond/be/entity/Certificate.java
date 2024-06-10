@@ -20,7 +20,6 @@ public class Certificate {
 
     @Column(unique = true)
     long giaReportNumber;
-
     String fileURL;
     Date dateOfIssues;
 

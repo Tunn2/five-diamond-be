@@ -1,14 +1,16 @@
 package online.fivediamond.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import online.fivediamond.be.enums.Origin;
 import online.fivediamond.be.enums.Type;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,26 +30,24 @@ public class Material {
     String cut;
     String imgURL;
     double price;
-    String origin;
+
+    @Enumerated(EnumType.STRING)
+    Origin origin;
+
+    @Enumerated(EnumType.STRING)
     Type type;
     String metal;
     String karat;
     int quantityOfSub;
-    double weightOfSub;
+    double caratOfSub;
     String typeOfSub;
-
-//    @OneToMany(mappedBy = "material")
-//    List<ProductMaterial> productMaterials;
 
     @OneToOne
     @JoinColumn(name = "certificate_id")
     Certificate certificate;
 
+    @ManyToMany(mappedBy = "materials")
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "product_material",
-            joinColumns = @JoinColumn(name = "material_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
     Set<Product> products;
 }
 

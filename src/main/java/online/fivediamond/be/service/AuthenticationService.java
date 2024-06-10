@@ -4,9 +4,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import online.fivediamond.be.entity.Account;
+import online.fivediamond.be.enums.Role;
 import online.fivediamond.be.exception.AuthException;
 import online.fivediamond.be.exception.BadRequestException;
 import online.fivediamond.be.model.*;
+import online.fivediamond.be.model.account.*;
 import online.fivediamond.be.repository.AuthenticationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +21,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Service
@@ -103,8 +104,8 @@ public class AuthenticationService implements UserDetailsService {
                 account = new Account();
                 account.setFirstname(firebaseToken.getName());
                 account.setEmail(email);
-                account.setRole("customer");
-                account = authenticationRepository.save(account);
+                account.setRole(Role.CUSTOMER);
+                account =authenticationRepository.save(account);
             }
             String token = tokenService.generateToken(account);
             accountResponse.setId(account.getId());
@@ -158,5 +159,16 @@ public class AuthenticationService implements UserDetailsService {
         Account account = getCurrentAccount();
         account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
         authenticationRepository.save(account);
+    }
+
+    public Account update(long id, AccountUpdateRequest request) {
+        Account account = authenticationRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        account.setFirstname(request.getFirstname());
+        account.setLastname(request.getLastname());
+        account.setPhone(request.getPhone());
+        account.setAddress(request.getAddress());
+        account.setGender(request.getGender());
+        account.setDob(request.getDob());
+        return authenticationRepository.save(account);
     }
 }

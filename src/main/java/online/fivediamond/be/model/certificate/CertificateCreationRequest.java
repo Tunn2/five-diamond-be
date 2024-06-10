@@ -1,12 +1,11 @@
-package online.fivediamond.be.model;
+package online.fivediamond.be.model.certificate;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class CertificateUpdateRequest {
-
+public class CertificateCreationRequest {
     long giaReportNumber;
     String fileURL;
     Date dateOfIssues;

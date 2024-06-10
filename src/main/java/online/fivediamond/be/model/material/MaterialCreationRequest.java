@@ -1,6 +1,7 @@
-package online.fivediamond.be.model;
+package online.fivediamond.be.model.material;
 
 import lombok.Data;
+import online.fivediamond.be.enums.Origin;
 import online.fivediamond.be.enums.Type;
 
 @Data
@@ -13,13 +14,13 @@ public class MaterialCreationRequest {
     double carat;
     String cut;
     long certificateID;
-    String origin;
+    Origin origin;
 
     //vo kim cuong
     String metal;
     String karat;
     String typeOfSub = "Diamond";
-    double weightOfSub;
+    double caratOfSub;
     int quantityOfSub;
 
     //diamond va vo kim cuong

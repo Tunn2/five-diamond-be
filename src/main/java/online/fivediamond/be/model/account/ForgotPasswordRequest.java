@@ -1,4 +1,4 @@
-package online.fivediamond.be.model;
+package online.fivediamond.be.model.account;
 
 import lombok.Getter;
 import lombok.Setter;

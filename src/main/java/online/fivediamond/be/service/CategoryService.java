@@ -1,11 +1,8 @@
 package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.Category;
-import online.fivediamond.be.entity.Material;
-import online.fivediamond.be.exception.AuthException;
-import online.fivediamond.be.exception.BadRequestException;
-import online.fivediamond.be.model.CategoryCreationRequest;
-import online.fivediamond.be.model.CategoryUpdateRequest;
+import online.fivediamond.be.model.category.CategoryCreationRequest;
+import online.fivediamond.be.model.category.CategoryUpdateRequest;
 import online.fivediamond.be.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

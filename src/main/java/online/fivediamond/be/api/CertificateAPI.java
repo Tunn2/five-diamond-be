@@ -1,14 +1,15 @@
 package online.fivediamond.be.api;
 
 import online.fivediamond.be.entity.Certificate;
-import online.fivediamond.be.model.CertificateCreationRequest;
-import online.fivediamond.be.model.CertificateUpdateRequest;
+import online.fivediamond.be.model.certificate.CertificateCreationRequest;
+import online.fivediamond.be.model.certificate.CertificateUpdateRequest;
 import online.fivediamond.be.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("api/certificate")
 public class CertificateAPI {
 
@@ -40,6 +41,11 @@ public class CertificateAPI {
     @PutMapping("{id}")
     public ResponseEntity update(@PathVariable long id, @RequestBody CertificateUpdateRequest request) {
         return ResponseEntity.ok(certificateService.update(id, request));
+    }
+
+    @GetMapping("not-yet-used")
+    public ResponseEntity getCertificatesNotYetUsed() {
+        return ResponseEntity.ok(certificateService.getCertificatesNotYetUsed());
     }
 
 }

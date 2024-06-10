@@ -1,14 +1,14 @@
 package online.fivediamond.be.api;
 
 import online.fivediamond.be.entity.Product;
-import online.fivediamond.be.model.ProductCreationRequest;
-import online.fivediamond.be.model.ProductUpdateRequest;
+import online.fivediamond.be.model.product.ProductCreationRequest;
 import online.fivediamond.be.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("api/product")
 public class ProductAPI {
 

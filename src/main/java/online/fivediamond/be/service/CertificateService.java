@@ -1,8 +1,8 @@
 package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.Certificate;
-import online.fivediamond.be.model.CertificateCreationRequest;
-import online.fivediamond.be.model.CertificateUpdateRequest;
+import online.fivediamond.be.model.certificate.CertificateCreationRequest;
+import online.fivediamond.be.model.certificate.CertificateUpdateRequest;
 import online.fivediamond.be.repository.CertificateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +41,10 @@ public class CertificateService {
 
     public Certificate getByGIANumber(long giaReportNumber) {
         return certificateRepository.findByGiaReportNumber(giaReportNumber);
+    }
+
+    public List<Certificate> getCertificatesNotYetUsed(){
+        return certificateRepository.findByNotYetUsed();
     }
 
 

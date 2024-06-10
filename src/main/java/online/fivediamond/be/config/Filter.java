@@ -41,16 +41,20 @@ public class Filter extends OncePerRequestFilter {
             "/api/login",
             "/api/register",
             "/api/send-mail",
+            "/api/user/{id}",
+            "/api/login-google",
             "/api/accounts",
             "/api/material",
             "/api/material/{id}",
+            "/api/material/available",
             "/api/product",
             "/api/product/{id}",
             "/api/forgot-password",
             "/api/category",
             "/api/category/{id}",
             "/api/certificate",
-            "/api/certificate/{id}"
+            "/api/certificate/{id}",
+            "/api/certificate/not-yet-used"
 
     );
 
