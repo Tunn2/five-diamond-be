@@ -3,6 +3,7 @@ package online.fivediamond.be.model.material;
 import lombok.Data;
 import online.fivediamond.be.enums.Origin;
 import online.fivediamond.be.enums.Type;
+import online.fivediamond.be.enums.TypeOfSub;
 
 @Data
 public class MaterialCreationRequest {
@@ -13,13 +14,13 @@ public class MaterialCreationRequest {
     String clarity;
     double carat;
     String cut;
-    long certificateID;
+    long giaReportNumber;
     Origin origin;
 
     //vo kim cuong
     String metal;
     String karat;
-    String typeOfSub = "Diamond";
+    TypeOfSub typeOfSub;
     double caratOfSub;
     int quantityOfSub;
 

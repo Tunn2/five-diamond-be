@@ -45,11 +45,14 @@ public class MaterialAPI {
         return ResponseEntity.ok(material);
     }
 
-    @GetMapping("not-yet-used")
-    public ResponseEntity getDiamondsNotYetUsed() {
+    @GetMapping("available-diamond")
+    public ResponseEntity getAvailableDiamonds() {
         return ResponseEntity.ok(materialService.getDiamondsNotYetUsed());
     }
 
-
+    @GetMapping("available-cover")
+    public ResponseEntity getAvailableCovers() {
+        return ResponseEntity.ok(materialService.getAllCovers());
+    }
 
 }

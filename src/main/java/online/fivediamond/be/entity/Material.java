@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import online.fivediamond.be.enums.Origin;
 import online.fivediamond.be.enums.Type;
+import online.fivediamond.be.enums.TypeOfSub;
 
 import java.util.Set;
 
@@ -40,7 +41,9 @@ public class Material {
     String karat;
     int quantityOfSub;
     double caratOfSub;
-    String typeOfSub;
+
+    @Enumerated(EnumType.STRING)
+    TypeOfSub typeOfSub;
 
     @OneToOne
     @JoinColumn(name = "certificate_id")

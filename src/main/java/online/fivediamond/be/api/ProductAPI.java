@@ -2,6 +2,7 @@ package online.fivediamond.be.api;
 
 import online.fivediamond.be.entity.Product;
 import online.fivediamond.be.model.product.ProductCreationRequest;
+import online.fivediamond.be.model.product.ProductUpdateRequest;
 import online.fivediamond.be.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +26,23 @@ public class ProductAPI {
         return ResponseEntity.ok(productService.getProductByID(id));
     }
 
+    @GetMapping("available")
+    public ResponseEntity getAvailableProducts() {
+        return ResponseEntity.ok(productService.getAvailableProducts());
+    }
+
     @PostMapping
     public ResponseEntity addNewProduct(@RequestBody ProductCreationRequest request) {
         Product product = productService.createProduct(request);
         return ResponseEntity.ok(product);
     }
 
-//    @PutMapping("{id}")
-//    public ResponseEntity updateProductByID(@PathVariable long id, @RequestBody ProductUpdateRequest request) {
-//        Product  product = productService.updateProductByID(id, request);
-//        return ResponseEntity.ok(product);
-//    }
-//
+    @PutMapping("{id}")
+    public ResponseEntity updateProductByID(@PathVariable long id, @RequestBody ProductUpdateRequest request) {
+        Product  product = productService.updateProductByID(id, request);
+        return ResponseEntity.ok(product);
+    }
+
     @DeleteMapping("{id}")
     public String deleteProductByID(@PathVariable long id) {
         productService.deleteProductByID(id);

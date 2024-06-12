@@ -3,6 +3,7 @@ package online.fivediamond.be.model.material;
 import lombok.Data;
 import online.fivediamond.be.enums.Origin;
 import online.fivediamond.be.enums.Type;
+import online.fivediamond.be.enums.TypeOfSub;
 
 @Data
 public class MaterialUpdateRequest {
@@ -20,7 +21,7 @@ public class MaterialUpdateRequest {
     String karat;
     double weight;
     double price;
-    String typeOfSub = "Diamond";
+    TypeOfSub typeOfSub;
     double caratOfSub;
     int quantityOfSub;
 }

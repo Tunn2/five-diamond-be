@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import online.fivediamond.be.enums.Gender;
 
 import java.util.Set;
 
@@ -23,6 +24,10 @@ public class Product {
     double priceRate;
     String imgURL;
     double weight;
+
+    @Enumerated(EnumType.STRING)
+    Gender gender;
+
     boolean isSpecial;
     boolean isDeleted;
     boolean isSale;
@@ -32,8 +37,8 @@ public class Product {
 
     @ManyToMany
     @JoinTable(name = "product_material",
-            joinColumns = @JoinColumn(name = "material_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "material_id"))
     Set<Material> materials;
 
 }

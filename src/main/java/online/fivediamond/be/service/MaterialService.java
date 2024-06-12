@@ -3,6 +3,7 @@ package online.fivediamond.be.service;
 import online.fivediamond.be.entity.Certificate;
 import online.fivediamond.be.entity.Material;
 import online.fivediamond.be.enums.Type;
+import online.fivediamond.be.enums.TypeOfSub;
 import online.fivediamond.be.model.material.MaterialCreationRequest;
 import online.fivediamond.be.model.material.MaterialUpdateRequest;
 import online.fivediamond.be.repository.CertificateRepository;
@@ -23,11 +24,14 @@ public class MaterialService {
     @Autowired
     CertificateRepository certificateRepository;
 
+    final double SUB_DIAMOND = 500000;
+    final double SUB_MOISSANITE = 250000;
+
     public Material create(MaterialCreationRequest request) {
         Material material = new Material();
         Certificate certificate = null;
         try {
-             certificate = certificateRepository.findById(request.getCertificateID()).orElseThrow(() -> new RuntimeException("Not found"));
+             certificate = certificateRepository.findByGiaReportNumber(request.getGiaReportNumber());
         }catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -48,7 +52,12 @@ public class MaterialService {
             material.setType(request.getType());
             material.setMetal(request.getMetal());
             material.setKarat(request.getKarat());
-            material.setPrice(request.getPrice());
+            material.setTypeOfSub(request.getTypeOfSub());
+            if(request.getTypeOfSub().toString().equals(TypeOfSub.DIAMOND.toString())) {
+                material.setPrice(SUB_DIAMOND * request.getQuantityOfSub());
+            } else if (request.getTypeOfSub().toString().equals(TypeOfSub.MOISSANITE.toString())) {
+                material.setPrice(SUB_MOISSANITE * request.getQuantityOfSub());
+            }
             material.setTypeOfSub(request.getTypeOfSub());
             material.setQuantityOfSub(request.getQuantityOfSub());
             material.setCaratOfSub(request.getCaratOfSub());
@@ -98,6 +107,10 @@ public class MaterialService {
 
     public List<Material> getDiamondsNotYetUsed() {
         return materialRepository.findByNotYetUsed();
+    }
+
+    public List<Material> getAllCovers() {
+        return materialRepository.findByType(Type.COVER);
     }
 
 }

@@ -43,7 +43,7 @@ public class CertificateAPI {
         return ResponseEntity.ok(certificateService.update(id, request));
     }
 
-    @GetMapping("not-yet-used")
+    @GetMapping("available")
     public ResponseEntity getCertificatesNotYetUsed() {
         return ResponseEntity.ok(certificateService.getCertificatesNotYetUsed());
     }
