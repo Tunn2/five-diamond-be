@@ -8,6 +8,7 @@ import lombok.ToString;
 import online.fivediamond.be.enums.Gender;
 import online.fivediamond.be.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -42,9 +43,13 @@ public class Account implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    Cart cart;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.toString()));
     }
 
     @Override

@@ -67,13 +67,6 @@ public class MaterialService {
 
     public Material update(long id, MaterialUpdateRequest request) {
         Material material = getMaterialByID(id);
-        Certificate certificate = null;
-        try {
-            certificate = certificateRepository.findById(request.getCertificateID()).orElseThrow(() -> new RuntimeException("Not found"));
-        }catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        material.setCertificate(certificate);
         material.setShape(request.getShape());
         material.setSize(request.getSize());
         material.setColor(request.getColor());

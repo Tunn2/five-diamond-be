@@ -56,7 +56,9 @@ public class Filter extends OncePerRequestFilter {
             "/api/category/{id}",
             "/api/certificate",
             "/api/certificate/{id}",
-            "/api/certificate/available"
+            "/api/certificate/available",
+            "/api/wallet/vnpay"
+//            "/api/cart/{id}"
 
     );
 

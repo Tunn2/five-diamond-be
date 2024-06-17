@@ -2,6 +2,7 @@ package online.fivediamond.be.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import online.fivediamond.be.enums.Gender;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,6 +33,8 @@ public class Product {
     boolean isSpecial;
     boolean isDeleted;
     boolean isSale;
+    int quantity;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;
@@ -40,5 +44,13 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "material_id"))
     Set<Material> materials;
+
+    @ManyToMany(mappedBy = "products")
+    @JsonManagedReference
+    Set<Cart> carts;
+
+    @ManyToOne
+    @JoinColumn(name = "line_id")
+    ProductLine productLine;
 
 }

@@ -14,7 +14,6 @@ public class MaterialUpdateRequest {
     double carat;
     String cut;
     String imgURL;
-    long certificateID;
     Origin origin;
     Type type;
     String metal;
