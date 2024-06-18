@@ -25,7 +25,7 @@ public class DiamondAPI {
 
     @GetMapping
     public ResponseEntity getAllDiamonds() {
-        return ResponseEntity.ok(diamondService.getAllMaterials());
+        return ResponseEntity.ok(diamondService.getAllDiamonds());
     }
     
 
@@ -47,7 +47,7 @@ public class DiamondAPI {
     }
 
     @GetMapping("/search")
-    public ResponseEntity getDiamonds(@RequestParam String shape, @RequestParam double size, @RequestParam double carat, @RequestParam String color, @RequestParam String clarity, @RequestParam String cut, @RequestParam Origin origin) {
+    public ResponseEntity getDiamonds(@RequestParam String shape, @RequestParam double size, @RequestParam double carat, @RequestParam String color, @RequestParam String clarity, @RequestParam String cut, @RequestParam String origin) {
         return ResponseEntity.ok(diamondService.getDiamonds(shape, size, carat, color, clarity, cut, origin));
     }
 

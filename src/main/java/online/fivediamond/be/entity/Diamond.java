@@ -8,10 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import online.fivediamond.be.enums.Origin;
-import online.fivediamond.be.enums.Type;
-import online.fivediamond.be.enums.TypeOfSub;
-
-import java.util.Set;
 
 @Entity
 @Setter

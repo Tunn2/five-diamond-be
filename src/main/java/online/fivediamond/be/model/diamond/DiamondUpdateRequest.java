@@ -2,8 +2,6 @@ package online.fivediamond.be.model.diamond;
 
 import lombok.Data;
 import online.fivediamond.be.enums.Origin;
-import online.fivediamond.be.enums.Type;
-import online.fivediamond.be.enums.TypeOfSub;
 
 @Data
 public class DiamondUpdateRequest {

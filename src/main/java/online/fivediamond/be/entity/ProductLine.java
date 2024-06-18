@@ -18,7 +18,9 @@ public class ProductLine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+    @Enumerated(EnumType.STRING)
     Gender gender;
+
     double priceRate;
     double price;
     double weight;

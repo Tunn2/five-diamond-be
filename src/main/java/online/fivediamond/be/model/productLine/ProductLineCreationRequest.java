@@ -1,4 +1,4 @@
-package online.fivediamond.be.model;
+package online.fivediamond.be.model.productLine;
 
 import lombok.Data;
 import online.fivediamond.be.enums.Gender;

@@ -3,11 +3,11 @@ package online.fivediamond.be.service;
 import online.fivediamond.be.entity.Certificate;
 import online.fivediamond.be.entity.Diamond;
 import online.fivediamond.be.enums.Origin;
-import online.fivediamond.be.enums.Type;
 import online.fivediamond.be.model.diamond.DiamondCreationRequest;
 import online.fivediamond.be.model.diamond.DiamondUpdateRequest;
 import online.fivediamond.be.repository.CertificateRepository;
 import online.fivediamond.be.repository.DiamondRepository;
+import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +65,7 @@ public class DiamondService {
         diamondRepository.deleteById(id);
     }
 
-    public List<Diamond> getAllMaterials() {
+    public List<Diamond> getAllDiamonds() {
         return diamondRepository.findAll();
     }
 
@@ -74,12 +74,8 @@ public class DiamondService {
         return diamondRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
 
-    public List<Diamond> getDiamonds(String shape, double size, double carat, String clarity, String cut, String color, Origin origin) {
+    public List<Diamond> getDiamonds(String shape, double size, double carat, String clarity, String cut, String color, String origin) {
         return diamondRepository.findByShapeContainingAndSizeAndCaratAndClarityContainingAndCutContainingAndColorContainingAndOrigin(shape, size, carat, clarity, cut, color, origin);
     }
-
-//    public List<Diamond> getDiamondsNotYetUsed() {
-//        return diamondRepository.findByNotYetUsed();
-//    }
 
 }
