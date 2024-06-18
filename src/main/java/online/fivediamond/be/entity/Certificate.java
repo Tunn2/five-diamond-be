@@ -25,6 +25,6 @@ public class Certificate {
 
     @JsonIgnore
     @OneToOne(mappedBy = "certificate")
-    Material material;
+    Diamond diamond;
 
 }

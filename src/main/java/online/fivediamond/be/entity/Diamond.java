@@ -1,9 +1,8 @@
 package online.fivediamond.be.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Setter
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Material {
+public class Diamond {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
@@ -31,26 +30,17 @@ public class Material {
     String cut;
     String imgURL;
     double price;
-
     @Enumerated(EnumType.STRING)
     Origin origin;
 
-    @Enumerated(EnumType.STRING)
-    Type type;
-    String metal;
-    String karat;
-    int quantityOfSub;
-    double caratOfSub;
-
-    @Enumerated(EnumType.STRING)
-    TypeOfSub typeOfSub;
-
     @OneToOne
     @JoinColumn(name = "certificate_id")
+    @NotNull
     Certificate certificate;
 
-    @ManyToMany(mappedBy = "materials")
     @JsonIgnore
-    Set<Product> products;
+    @OneToOne(mappedBy = "diamond")
+    Product product;
+
 }
 

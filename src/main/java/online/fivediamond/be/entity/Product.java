@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import online.fivediamond.be.enums.Gender;
+import org.checkerframework.common.aliasing.qual.Unique;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,35 +22,14 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    double price;
-    double priceRate;
-    String imgURL;
-    double weight;
 
-    @Enumerated(EnumType.STRING)
-    Gender gender;
+    boolean isSale = false;
 
-    boolean isSpecial;
-    boolean isDeleted;
-    boolean isSale;
-    int quantity;
+    @OneToOne
+    @JoinColumn(name = "diamond_id")
+    Diamond diamond;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    Category category;
-
-    @ManyToMany
-    @JoinTable(name = "product_material",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "material_id"))
-    Set<Material> materials;
-
-    @ManyToMany(mappedBy = "products")
-    @JsonManagedReference
-    Set<Cart> carts;
-
-    @ManyToOne
-    @JoinColumn(name = "line_id")
+    @JoinColumn(name = "productLine_id")
     ProductLine productLine;
-
 }

@@ -28,7 +28,7 @@ public class Category {
     boolean isDeleted = false;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category")
-    List<Product> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    List<ProductLine> productLines;
 
 }
