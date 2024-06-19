@@ -32,4 +32,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "productLine_id")
     ProductLine productLine;
+
+    @OneToOne(mappedBy = "product",cascade = CascadeType.ALL)
+    OrderItem orderItem;
 }

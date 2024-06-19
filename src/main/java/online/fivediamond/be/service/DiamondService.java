@@ -74,8 +74,8 @@ public class DiamondService {
         return diamondRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
 
-    public List<Diamond> getDiamonds(String shape, double size, double carat, String clarity, String cut, String color, String origin) {
-        return diamondRepository.findByShapeContainingAndSizeAndCaratAndClarityContainingAndCutContainingAndColorContainingAndOrigin(shape, size, carat, clarity, cut, color, origin);
+    public List<Diamond> getDiamonds(String shape, String origin, double size, double carat, String color, String cut, String clarity) {
+        return diamondRepository.getDiamonds(shape, origin, size, carat, color, cut, clarity);
     }
 
 }

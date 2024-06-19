@@ -1,0 +1,26 @@
+package online.fivediamond.be.api;
+
+import online.fivediamond.be.entity.Collection;
+import online.fivediamond.be.model.collection.CollectionCreationRequest;
+import online.fivediamond.be.model.collection.CollectionUpdateRequest;
+import online.fivediamond.be.service.CollectionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("api/collection")
+public class CollectionAPI {
+    @Autowired
+    CollectionService collectionService;
+
+    @PostMapping
+    public ResponseEntity create(@RequestBody CollectionCreationRequest request) {
+        return ResponseEntity.ok(collectionService.create(request));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity update(@PathVariable long id, CollectionUpdateRequest request) {
+        return  ResponseEntity.ok(collectionService.update(id, request));
+    }
+}

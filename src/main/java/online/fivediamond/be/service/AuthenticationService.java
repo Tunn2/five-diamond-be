@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import online.fivediamond.be.entity.Account;
+//import online.fivediamond.be.entity.Cart;
 import online.fivediamond.be.entity.Cart;
 import online.fivediamond.be.enums.Role;
 import online.fivediamond.be.exception.AuthException;
@@ -11,6 +12,7 @@ import online.fivediamond.be.exception.BadRequestException;
 import online.fivediamond.be.model.*;
 import online.fivediamond.be.model.account.*;
 import online.fivediamond.be.repository.AuthenticationRepository;
+//import online.fivediamond.be.repository.CartRepository;
 import online.fivediamond.be.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -95,7 +97,7 @@ public class AuthenticationService implements UserDetailsService {
         accountResponse.setGender(account.getGender());
         accountResponse.setRewardPoint(account.getRewardPoint());
         accountResponse.setAddress(account.getAddress());
-        accountResponse.setCart(account.getCart());
+//        accountResponse.setCart(account.getCart());
         return accountResponse;
     }
 

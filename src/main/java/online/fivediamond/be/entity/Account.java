@@ -1,5 +1,6 @@
 package online.fivediamond.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -46,6 +48,10 @@ public class Account implements UserDetails {
     @OneToOne
     @JoinColumn(name = "cart_id")
     Cart cart;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    Set<Order> orders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

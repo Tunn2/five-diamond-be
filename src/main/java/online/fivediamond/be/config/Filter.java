@@ -45,9 +45,6 @@ public class Filter extends OncePerRequestFilter {
             "/api/login-google",
             "/api/accounts",
             "/api/diamond",
-            "/api/diamond/meo",
-            "/api/diamond/gau",
-            "/api/diamond/cac",
             "/api/diamond/{id}",
             "/api/diamond/search",
             "/api/product",
@@ -62,9 +59,10 @@ public class Filter extends OncePerRequestFilter {
             "/api/certificate",
             "/api/certificate/{id}",
             "/api/certificate/available",
-            "/api/wallet/vnpay"
-//            "/api/cart/{id}"
-
+            "/api/wallet/vnpay",
+            "/api/collection",
+            "/api/collection/{id}",
+            "/api/cart/{id}"
     );
 
     private boolean isPermitted(String uri) {

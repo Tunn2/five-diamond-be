@@ -42,6 +42,9 @@ public class ProductLine {
     double size;
     Origin origin;
 
+    @ManyToOne
+    @JoinColumn(name = "product_line_id")
+    Collection collection;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -50,4 +53,7 @@ public class ProductLine {
     @JsonIgnore
     @OneToMany(mappedBy = "productLine", cascade = CascadeType.ALL)
     Set<Product> products;
+
+    @OneToOne(mappedBy = "productLine")
+    CartItem cartItem;
 }
