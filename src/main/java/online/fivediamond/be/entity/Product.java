@@ -1,47 +1,38 @@
 package online.fivediamond.be.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import online.fivediamond.be.enums.Gender;
+import org.checkerframework.common.aliasing.qual.Unique;
 
-import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    String imgURL1;
-    String imgURL2;
-    String imgURL3;
-    String imgURL4;
-    String description;
-    String type;
-    String metal;
-    String karat;
-    String weightOfType;
-    String sideStones;
-    double weightOfSideStones;
-    int quantityOfSideStones;
-    Date importDate;
-    long giaReportNumber;
-    String shape;
-    double carat;
-    String color;
-    String clarity;
-    String cut;
-    Date dateOfIssues;
+    boolean isSale = false;
 
-    double cost;
-    double price;
+    @OneToOne
+    @JoinColumn(name = "diamond_id")
+    Diamond diamond;
 
+    @ManyToOne
+    @JoinColumn(name = "productLine_id")
+    ProductLine productLine;
+
+    @OneToOne(mappedBy = "product",cascade = CascadeType.ALL)
+    OrderItem orderItem;
 }

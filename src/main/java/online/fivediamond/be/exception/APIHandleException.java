@@ -19,7 +19,7 @@ public class APIHandleException {
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<Object> handleDuplicateEmail(SQLIntegrityConstraintViolationException ex) {
-        return new ResponseEntity<>("Email is registed!!!", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Registed!!!", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthException.class)

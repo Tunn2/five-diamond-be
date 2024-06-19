@@ -3,14 +3,13 @@ package online.fivediamond.be.api;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.entity.Account;
 import online.fivediamond.be.model.*;
+import online.fivediamond.be.model.account.*;
 import online.fivediamond.be.service.AuthenticationService;
 import online.fivediamond.be.service.EmailService;
-import online.fivediamond.be.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +17,11 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 @SecurityRequirement(name = "api")
+@CrossOrigin("*")
 public class AuthenticationAPI {
     @Autowired
     AuthenticationService authenticationService;
     //nhan request tu FE
-
-
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -34,7 +32,6 @@ public class AuthenticationAPI {
     @PostMapping("register")
     public ResponseEntity register(@RequestBody RegisterRequest registerRequest) {
         Account account = authenticationService.register(registerRequest);
-        //account da dc luu xuong db
         return ResponseEntity.ok(account);
     }
 
@@ -81,5 +78,8 @@ public class AuthenticationAPI {
         authenticationService.resetPassword(resetPasswordRequest);
     }
 
-
+    @PostMapping("user/{id}")
+    public ResponseEntity update(@PathVariable long id, @RequestBody AccountUpdateRequest request) {
+        return ResponseEntity.ok(authenticationService.update(id, request));
+    }
 }

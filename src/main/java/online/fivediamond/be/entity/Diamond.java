@@ -1,34 +1,42 @@
 package online.fivediamond.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Date;
+import lombok.experimental.FieldDefaults;
+import online.fivediamond.be.enums.Origin;
 
 @Entity
-@Getter
 @Setter
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Diamond {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    @Column(unique = true)
-    long giaReportNumber;
-    String imgURL1;
-    String imgURL2;
-    String imgURL3;
-    String imgURL4;
-    double cost;
-    double price;
-    Date importDate;
-    double size;
     String shape;
-    double carat;
+    double size;
     String color;
     String clarity;
+    double carat;
     String cut;
-    Date dateOfIssues;
+    String imgURL;
+    double price;
+    @Enumerated(EnumType.STRING)
+    Origin origin;
+
+    @OneToOne
+    @JoinColumn(name = "certificate_id")
+    @NotNull
+    Certificate certificate;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "diamond")
+    Product product;
 
 }
+

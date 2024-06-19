@@ -1,76 +1,112 @@
-package online.fivediamond.be.service;
-
-import online.fivediamond.be.entity.Product;
-import online.fivediamond.be.model.ProductCreationRequest;
-import online.fivediamond.be.model.ProductUpdateRequest;
-import online.fivediamond.be.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-@Service
-public class ProductService {
-
-    @Autowired
-    ProductRepository productRepository;
-    public Product createProduct(ProductCreationRequest request) {
-        Product product = new Product();
-
-        product.setType(request.getType());
-        product.setMetal(request.getMetal());
-        product.setKarat(request.getKarat());
-        product.setGiaReportNumber(request.getGiaReportNumber());
-        product.setImgURL1(request.getImgURL1());
-        product.setImgURL2(request.getImgURL2());
-        product.setImgURL3(request.getImgURL3());
-        product.setImgURL4(request.getImgURL4());
-        product.setCost(request.getCost());
-        product.setPrice(request.getPrice());
-        product.setImportDate(request.getImportDate());
-        product.setShape(request.getShape());
-        product.setCarat(request.getCarat());
-        product.setColor(request.getColor());
-        product.setClarity(request.getClarity());
-        product.setCut(request.getCut());
-        product.setDateOfIssues(request.getDateOfIssues());
-
-        return productRepository.save(product);
-    }
-
-    public Product updateProductByID(long id, ProductUpdateRequest request) {
-        Product product = getProductByID(id);
-
-        product.setGiaReportNumber(request.getGiaReportNumber());
-        product.setImgURL1(request.getImgURL1());
-        product.setImgURL2(request.getImgURL2());
-        product.setImgURL3(request.getImgURL3());
-        product.setImgURL4(request.getImgURL4());
-        product.setCost(request.getCost());
-        product.setPrice(request.getPrice());
-        product.setType(request.getType());
-        product.setMetal(request.getMetal());
-        product.setKarat(request.getKarat());
-        product.setImportDate(request.getImportDate());
-        product.setShape(request.getShape());
-        product.setCarat(request.getCarat());
-        product.setColor(request.getColor());
-        product.setClarity(request.getClarity());
-        product.setCut(request.getCut());
-
-        product.setDateOfIssues(request.getDateOfIssues());
-        return productRepository.save(product);
-    }
-
-    public void deleteProductByID(long id) {
-        productRepository.deleteById(id);
-    }
-
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public Product getProductByID(long id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-    }
-}
+//package online.fivediamond.be.service;
+//
+//import online.fivediamond.be.entity.Diamond;
+//import online.fivediamond.be.entity.Product;
+//import online.fivediamond.be.model.product.ProductCreationRequest;
+//import online.fivediamond.be.model.product.ProductUpdateRequest;
+//import online.fivediamond.be.repository.CategoryRepository;
+//import online.fivediamond.be.repository.DiamondRepository;
+//import online.fivediamond.be.repository.ProductRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.HashSet;
+//import java.util.Iterator;
+//import java.util.List;
+//import java.util.Set;
+//
+//@Service
+//public class ProductService {
+//
+//    @Autowired
+//    ProductRepository productRepository;
+//
+//    @Autowired
+//    DiamondRepository diamondRepository;
+//
+//    @Autowired
+//    CategoryRepository categoryRepository;
+//
+//    final double GOLD_24K = 7600000;
+//    final double GOLD_18K = GOLD_24K * 0.75;
+////    public Product createProduct(ProductCreationRequest request) {
+////        Product product = new Product();
+////        List<Diamond> materials = diamondRepository.findAllById(request.getMaterialID());
+////        Set<Diamond> targetSet = new HashSet<>(materials);
+////        Iterator<Diamond> iterator = targetSet.iterator();
+////        double price = 0;
+////        double priceOfMetal = 0;
+////        double priceOfDiamond = 0;
+////        while(iterator.hasNext()) {
+////            Diamond material = iterator.next();
+////            if(material.getCertificate() == null) {
+////                if(material.getKarat().equals("24K"))
+////                    priceOfMetal = GOLD_24K * request.getWeight() + material.getPrice();
+////                else if(material.getKarat().equals("18K")) {
+////                    priceOfMetal = GOLD_18K * request.getWeight() + material.getPrice();
+////                }
+////            }else {
+////                priceOfDiamond = material.getPrice();
+////            }
+////        }
+////        price = priceOfMetal + priceOfDiamond;
+////        product.setGender(request.getGender());
+////        product.setPrice(price);
+////        product.setPriceRate(request.getPriceRate());
+////        product.setMaterials(targetSet);
+////        product.setCategory(categoryRepository.findById(request.getCategoryID()).orElseThrow(() -> new RuntimeException("Not found")));
+////        product.setImgURL(request.getImgURL());
+////        product.setWeight(request.getWeight());
+////        product.setSpecial(request.isSpecial());
+////        return productRepository.save(product);
+////    }
+//
+//    public Product updateProductByID(long id, ProductUpdateRequest request) {
+//        Product product = getProductByID(id);
+//
+//        List<Diamond> materials = diamondRepository.findAllById(request.getMaterialID());
+//        Set<Diamond> targetSet = new HashSet<>(materials);
+//        Iterator<Diamond> iterator = targetSet.iterator();
+//        double price = 0;
+//        double priceOfMetal = 0;
+//        double priceOfDiamond = 0;
+//        while(iterator.hasNext()) {
+//            Diamond material = iterator.next();
+//            if(material.getCertificate() == null) {
+//                if(material.getKarat().equals("24K"))
+//                    priceOfMetal = GOLD_24K * request.getWeight() + material.getPrice();
+//                else if(material.getKarat().equals("18K")) {
+//                    priceOfMetal = GOLD_18K * request.getWeight() + material.getPrice();
+//                }
+//            }else {
+//                priceOfDiamond = material.getPrice();
+//            }
+//        }
+//        price = priceOfMetal + priceOfDiamond;
+//        product.setPrice(price);
+//        product.setGender(request.getGender());
+//        product.setPriceRate(request.getPriceRate());
+//        product.setMaterials(targetSet);
+//        product.setCategory(categoryRepository.findById(request.getCategoryID()).orElseThrow(() -> new RuntimeException("Not found")));
+//        product.setImgURL(request.getImgURL());
+//        product.setWeight(request.getWeight());
+//        product.setSpecial(request.isSpecial());
+//        return productRepository.save(product);
+//    }
+//
+//    public List<Product> getAvailableProducts() {
+//        return productRepository.findByIsDeletedFalseAndIsSaleFalse();
+//    }
+//
+//    public void deleteProductByID(long id) {
+//        productRepository.deleteById(id);
+//    }
+//
+//    public List<Product> getAllProducts() {
+//        return productRepository.findAll();
+//    }
+//
+//    public Product getProductByID(long id) {
+//        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+//    }
+//}

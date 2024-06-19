@@ -41,13 +41,28 @@ public class Filter extends OncePerRequestFilter {
             "/api/login",
             "/api/register",
             "/api/send-mail",
+            "/api/user/{id}",
+            "/api/login-google",
             "/api/accounts",
             "/api/diamond",
             "/api/diamond/{id}",
+            "/api/diamond/search",
             "/api/product",
             "/api/product/{id}",
-            "/api/forgot-password"
-
+            "/api/product/available",
+            "/api/product-line",
+            "/api/product-line/available",
+            "/api/product-line/{id}",
+            "/api/forgot-password",
+            "/api/category",
+            "/api/category/{id}",
+            "/api/certificate",
+            "/api/certificate/{id}",
+            "/api/certificate/available",
+            "/api/wallet/vnpay",
+            "/api/collection",
+            "/api/collection/{id}",
+            "/api/cart/{id}"
     );
 
     private boolean isPermitted(String uri) {
