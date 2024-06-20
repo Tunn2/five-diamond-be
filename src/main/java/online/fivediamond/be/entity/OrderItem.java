@@ -12,7 +12,7 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-
+    int size;
     @ManyToOne
     @JoinColumn(name = "order_id")
     Order order;

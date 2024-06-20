@@ -97,7 +97,8 @@ public class AuthenticationService implements UserDetailsService {
         accountResponse.setGender(account.getGender());
         accountResponse.setRewardPoint(account.getRewardPoint());
         accountResponse.setAddress(account.getAddress());
-//        accountResponse.setCart(account.getCart());
+        accountResponse.setCart(account.getCart());
+
         return accountResponse;
     }
 

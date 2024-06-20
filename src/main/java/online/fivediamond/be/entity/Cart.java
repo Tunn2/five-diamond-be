@@ -16,7 +16,6 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-
     @OneToOne(mappedBy = "cart",cascade = CascadeType.ALL)
     @JsonIgnore
     Account account;

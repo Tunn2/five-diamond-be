@@ -20,12 +20,15 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+    String fullname;
+    String phone;
     Date orderDate;
     String note;
+    String address;
     double totalAmount;
 
     @Enumerated(EnumType.STRING)
-    OrderStatus orderStatus = OrderStatus.PENDING;
+    OrderStatus orderStatus;
 
     @JsonIgnore
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)

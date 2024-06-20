@@ -32,4 +32,16 @@ public class ProductLineAPI {
     public ResponseEntity updateById(@PathVariable long id, ProductLineUpdateRequest request) {
         return ResponseEntity.ok(productLineService.update(id, request));
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity getById(@PathVariable long id) {
+        return ResponseEntity.ok(productLineService.getById(id));
+    }
+
+    @DeleteMapping("{id}")
+    public String deleteById(@PathVariable long id) {
+        productLineService.deleteById(id);
+        return "Delete successfully";
+    }
+
 }

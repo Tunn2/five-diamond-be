@@ -9,7 +9,8 @@ import java.util.List;
 
 @Data
 public class ProductLineUpdateRequest {
-
+    String description;
+    String name;
     Gender gender;
     double priceRate;
     double weight;
