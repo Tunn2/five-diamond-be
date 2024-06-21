@@ -153,8 +153,10 @@ public class ProductLineService {
         return productLineRepository.findAll();
     }
 
-    public void delete(long id) {
-        productRepository.deleteById(id);
+    public ProductLine delete(long id) {
+        ProductLine productLine = productLineRepository.findById(id).orElseThrow();
+        productLine.setDeleted(true);
+        return productLineRepository.save(productLine);
     }
 
     public ProductLine getById(long id) {

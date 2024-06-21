@@ -68,4 +68,10 @@ public class CartService {
         Account account = accountUtil.accountCurrent();
         return account.getCart();
     }
+
+//    boolean checkQuantity() {
+//        Account account = accountUtil.accountCurrent();
+//        Cart cart = account.getCart();
+//        int quantityInStock =
+//    }
 }

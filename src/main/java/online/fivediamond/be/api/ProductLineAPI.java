@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/product-line")
+@CrossOrigin("*")
 public class ProductLineAPI {
     @Autowired
     ProductLineService productLineService;
@@ -29,7 +30,7 @@ public class ProductLineAPI {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity updateById(@PathVariable long id, ProductLineUpdateRequest request) {
+    public ResponseEntity updateById(@PathVariable long id, @RequestBody ProductLineUpdateRequest request) {
         return ResponseEntity.ok(productLineService.update(id, request));
     }
 
@@ -39,9 +40,8 @@ public class ProductLineAPI {
     }
 
     @DeleteMapping("{id}")
-    public String deleteById(@PathVariable long id) {
-        productLineService.deleteById(id);
-        return "Delete successfully";
+    public ResponseEntity deleteById(@PathVariable long id) {
+        return ResponseEntity.ok(productLineService.delete(id));
     }
 
 }

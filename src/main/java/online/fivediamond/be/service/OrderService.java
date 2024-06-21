@@ -2,19 +2,22 @@ package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.*;
 import online.fivediamond.be.model.order.OrderCreationRequest;
-import online.fivediamond.be.repository.CartItemRepository;
-import online.fivediamond.be.repository.CartRepository;
-import online.fivediamond.be.repository.OrderItemRepository;
-import online.fivediamond.be.repository.OrderRepository;
+import online.fivediamond.be.repository.*;
 import online.fivediamond.be.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class OrderService {
+@Autowired
+    ProductLineRepository productLineRepository;
+
+@Autowired
+ProductRepository productRepository;
 
     @Autowired
     CartRepository cartRepository;
@@ -31,14 +34,36 @@ public class OrderService {
     @Autowired
     CartItemRepository cartItemRepository;
 
-    public Order convertCartToOrder(long cartId, OrderCreationRequest request) {
+
+    @Transactional
+    public Order convertCartToOrder(OrderCreationRequest request) {
         Account account = accountUtil.accountCurrent();
-        Cart cart = cartRepository.findById(cartId).orElseThrow();
+        Cart cart = cartRepository.findById(account.getCart().getId()).orElseThrow();
         Set<CartItem> cartItems = cart.getCartItems();
         Order order = new Order();
-        order.setAccount(account);
-        order.setOrderDate(new Date());
+        order = orderRepository.save(order);
+        // productLines;
+        for(CartItem item: cartItems) {
+            ProductLine productLine = item.getProductLine();
+            List<Product> products = productRepository.findAvailableProducts(item.getQuantity(), productLine.getId());
+            for(Product product: products){
+                OrderItem orderItem = new OrderItem();
+                orderItem.setPrice(productLine.getPrice());
+                orderItem.setProduct(product);
+                orderItem.setOrder(order);
+                product.setSale(true);
+                productRepository.save(product);
+                orderItemRepository.save(orderItem);
+            }
+            System.out.println(item.getId());
 
+            //dit me dong 61 deo co transactional voi modiying la no loi cay vc
+            cartItemRepository.deleteCartItem(item.getId());
+        }
+
+        order.setAccount(account);
+        order.setPhone(request.getPhone());
+        orderRepository.save(order);
         return order;
     }
 }

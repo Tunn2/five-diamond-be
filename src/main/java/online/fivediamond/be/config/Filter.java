@@ -47,6 +47,7 @@ public class Filter extends OncePerRequestFilter {
             "/api/diamond",
             "/api/diamond/{id}",
             "/api/diamond/search",
+            "/api/diamond/update",
             "/api/product",
             "/api/product/{id}",
             "/api/product/available",

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import online.fivediamond.be.enums.OrderStatus;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -22,10 +23,11 @@ public class Order {
 
     String fullname;
     String phone;
-    Date orderDate;
+    LocalDateTime orderDate;
     String note;
     String address;
     double totalAmount;
+    Date shippingDate;
 
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
