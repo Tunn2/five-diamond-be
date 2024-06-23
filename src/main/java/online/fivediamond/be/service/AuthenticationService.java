@@ -98,7 +98,6 @@ public class AuthenticationService implements UserDetailsService {
         accountResponse.setRewardPoint(account.getRewardPoint());
         accountResponse.setAddress(account.getAddress());
         accountResponse.setCart(account.getCart());
-
         return accountResponse;
     }
 
@@ -118,9 +117,12 @@ public class AuthenticationService implements UserDetailsService {
                 account.setFirstname(firebaseToken.getName());
                 account.setEmail(email);
                 account.setRole(Role.CUSTOMER);
-
+                Cart cart = new Cart();
+                cart = cartRepository.save(cart);
+                account.setCart(cart);
                 account =authenticationRepository.save(account);
             }
+
             String token = tokenService.generateToken(account);
             accountResponse.setId(account.getId());
             accountResponse.setEmail(account.getEmail());
@@ -133,6 +135,7 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setGender(account.getGender());
             accountResponse.setRewardPoint(account.getRewardPoint());
             accountResponse.setAddress(account.getAddress());
+            accountResponse.setCart(account.getCart());
         } catch (FirebaseAuthException ex) {
             ex.printStackTrace();
         }
