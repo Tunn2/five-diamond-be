@@ -1,5 +1,6 @@
 package online.fivediamond.be.service;
 
+import online.fivediamond.be.entity.Category;
 import online.fivediamond.be.entity.Diamond;
 import online.fivediamond.be.entity.Product;
 import online.fivediamond.be.entity.ProductLine;
@@ -12,9 +13,7 @@ import online.fivediamond.be.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProductLineService {
@@ -53,7 +52,9 @@ public class ProductLineService {
                 priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
             }
         }
-
+        Category category = categoryRepository.findById(request.getCategoryID()).orElseThrow();
+        productLine.setDescription(request.getDescription());
+        productLine.setName(request.getName());
         productLine.setGender(request.getGender());
         productLine.setPrice(priceOfMetal + priceOfDiamond);
         productLine.setPriceRate(request.getPriceRate());
@@ -106,7 +107,8 @@ public class ProductLineService {
                 priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
             }
         }
-
+        productLine.setDescription(request.getDescription());
+        productLine.setName(request.getName());
         productLine.setGender(request.getGender());
         productLine.setPrice(priceOfMetal + priceOfDiamond);
         productLine.setPriceRate(request.getPriceRate());
@@ -119,7 +121,6 @@ public class ProductLineService {
         productLine.setQuantityOfSub(request.getQuantityOfSub());
         productLine.setQuantity(diamonds.size());
         productLine.setSpecial(request.isSpecial());
-
         productLine.setShape(request.getShape());
         productLine.setCut(request.getCut());
         productLine.setClarity(request.getClarity());
@@ -152,4 +153,13 @@ public class ProductLineService {
         return productLineRepository.findAll();
     }
 
+    public ProductLine delete(long id) {
+        ProductLine productLine = productLineRepository.findById(id).orElseThrow();
+        productLine.setDeleted(true);
+        return productLineRepository.save(productLine);
+    }
+
+    public ProductLine getById(long id) {
+        return productLineRepository.findById(id).orElseThrow();
+    }
 }

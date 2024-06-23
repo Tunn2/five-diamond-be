@@ -78,4 +78,9 @@ public class DiamondService {
         return diamondRepository.getDiamonds(shape, origin, size, carat, color, cut, clarity);
     }
 
+    public List<Diamond> getDiamonds1(String shape, String origin, double size, double carat, String color, String cut, String clarity) {
+        return diamondRepository.getDiamonds(shape, origin, size, carat, color, cut, clarity);
+    }
+
+
 }

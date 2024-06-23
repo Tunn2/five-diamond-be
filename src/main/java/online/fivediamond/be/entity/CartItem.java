@@ -1,5 +1,6 @@
 package online.fivediamond.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +14,13 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_line_id")
     ProductLine productLine;
 
     int quantity;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cart_id")
     Cart cart;

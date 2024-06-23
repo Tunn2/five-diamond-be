@@ -49,6 +49,11 @@ public class DiamondAPI {
 
 
     @GetMapping("search")
+    public ResponseEntity getDiamonds(@RequestParam String shape,@RequestParam String origin, @RequestParam double size, @RequestParam double carat, @RequestParam String color, @RequestParam String cut, @RequestParam String clarity) {
+        return ResponseEntity.ok(diamondService.getDiamonds(shape, origin, size, carat, color, cut, clarity));
+    }
+
+    @GetMapping("update")
     public ResponseEntity getDiamonds1(@RequestParam String shape,@RequestParam String origin, @RequestParam double size, @RequestParam double carat, @RequestParam String color, @RequestParam String cut, @RequestParam String clarity) {
         return ResponseEntity.ok(diamondService.getDiamonds(shape, origin, size, carat, color, cut, clarity));
     }

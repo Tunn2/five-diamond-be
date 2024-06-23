@@ -1,5 +1,6 @@
 package online.fivediamond.be.service;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.entity.Account;
 import online.fivediamond.be.entity.Cart;
 import online.fivediamond.be.entity.CartItem;
@@ -35,17 +36,18 @@ public class CartService {
         Cart cart = account.getCart();
         ProductLine productLine = productLineRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         Set<CartItem> cartItems = cart.getCartItems();
-
         if(cartItems.isEmpty()) {
             CartItem cartItem = new CartItem();
             cartItem.setQuantity(1);
             cartItem.setProductLine(productLine);
             cartItem.setCart(cart);
             cartItemRepository.save(cartItem);
-            return "Add to cart successfully";
         } else {
             for (CartItem item : cartItems) {
                 if (item.getProductLine().getId() == id) {
+                    if(item.getQuantity() > item.getProductLine().getQuantity()) {
+                        throw new RuntimeException("The quantity in stock is not enough");
+                    }
                     item.setQuantity(item.getQuantity() + 1);
                     cartItemRepository.save(item);
                     return "Update quantity this product in cart";
@@ -56,8 +58,8 @@ public class CartService {
             cartItem.setProductLine(productLine);
             cartItem.setCart(cart);
             cartItemRepository.save(cartItem);
-            return "Add to cart successfully";
         }
+        return "Add to cart successfully";
     }
 
     public void delete(long id) {
@@ -67,4 +69,10 @@ public class CartService {
         Account account = accountUtil.accountCurrent();
         return account.getCart();
     }
+
+//    boolean checkQuantity() {
+//        Account account = accountUtil.accountCurrent();
+//        Cart cart = account.getCart();
+//        int quantityInStock =
+//    }
 }

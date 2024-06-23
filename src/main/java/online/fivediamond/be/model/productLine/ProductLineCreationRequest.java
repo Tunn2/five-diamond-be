@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 public class ProductLineCreationRequest {
 
+    String description;
+    String name;
     Gender gender;
     double priceRate;
     double weight;

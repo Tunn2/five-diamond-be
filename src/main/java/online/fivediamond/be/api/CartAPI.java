@@ -13,9 +13,14 @@ public class CartAPI {
     @Autowired
     CartService cartService;
 
-    @PutMapping("{id}")
+    @PostMapping("{id}")
     public ResponseEntity addToCart(@PathVariable long id) {
         return ResponseEntity.ok(cartService.addToCart(id));
+    }
+
+    @GetMapping
+    public ResponseEntity getCart() {
+        return ResponseEntity.ok(cartService.getCart());
     }
 
     @DeleteMapping("{id}")

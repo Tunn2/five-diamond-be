@@ -21,6 +21,8 @@ public class ProductLine {
     @Enumerated(EnumType.STRING)
     Gender gender;
 
+    String description;
+    String name;
     double priceRate;
     double price;
     double weight;
@@ -43,7 +45,7 @@ public class ProductLine {
     Origin origin;
 
     @ManyToOne
-    @JoinColumn(name = "product_line_id")
+    @JoinColumn(name = "collection_id")
     Collection collection;
 
     @ManyToOne
@@ -54,6 +56,7 @@ public class ProductLine {
     @OneToMany(mappedBy = "productLine", cascade = CascadeType.ALL)
     Set<Product> products;
 
-    @OneToOne(mappedBy = "productLine")
-    CartItem cartItem;
+    @JsonIgnore
+    @OneToMany(mappedBy = "productLine")
+    Set<CartItem> cartItem;
 }

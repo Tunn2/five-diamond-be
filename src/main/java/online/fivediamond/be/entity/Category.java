@@ -24,7 +24,6 @@ public class Category {
     @Column(unique = true)
     String name;
     String description;
-    @JsonIgnore
     boolean isDeleted = false;
 
     @JsonIgnore

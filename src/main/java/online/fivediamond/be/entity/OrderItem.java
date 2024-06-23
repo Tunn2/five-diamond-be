@@ -20,4 +20,6 @@ public class OrderItem {
     @OneToOne
     @JoinColumn(name = "product_id")
     Product product;
+
+    double price;
 }
