@@ -1,6 +1,10 @@
 package online.fivediamond.be.service;
 
+import online.fivediamond.be.entity.Account;
+import online.fivediamond.be.entity.Order;
 import online.fivediamond.be.model.RechargeRequestDTO;
+import online.fivediamond.be.util.AccountUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -17,11 +21,14 @@ import java.util.UUID;
 
 @Service
 public class WalletService {
+
+    @Autowired
+    OrderService orderService;
+
     public String createUrl(RechargeRequestDTO rechargeRequestDTO) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime createDate = LocalDateTime.now();
         String formattedCreateDate = createDate.format(formatter);
-
 //        User user = accountUtils.getCurrentUser();
 
         String orderId = UUID.randomUUID().toString().substring(0,6);
@@ -53,6 +60,9 @@ public class WalletService {
         vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + orderId);
         vnpParams.put("vnp_OrderType", "other");
         vnpParams.put("vnp_Amount", rechargeRequestDTO.getAmount() +"00");
+
+//        Order order = orderService.convertCartToOrder();
+
         vnpParams.put("vnp_ReturnUrl", returnUrl);
         vnpParams.put("vnp_CreateDate", formattedCreateDate);
         vnpParams.put("vnp_IpAddr", "157.245.145.162");

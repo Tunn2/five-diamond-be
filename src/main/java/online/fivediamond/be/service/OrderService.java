@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +52,6 @@ ProductRepository productRepository;
         }
         Order order = new Order();
         order = orderRepository.save(order);
-        // productLines;
         for(CartItem item: cartItems) {
             ProductLine productLine = item.getProductLine();
             List<Product> products = productRepository.findAvailableProducts(item.getQuantity(), productLine.getId());
@@ -61,7 +59,6 @@ ProductRepository productRepository;
                 orderRepository.deleteById(order.getId());
                 throw new RuntimeException("Quantity of " + item.getProductLine().getName() + " in stock is not enough");
             }
-
             int count = 0;
             for(Product product: products){
                 count++;
@@ -69,7 +66,6 @@ ProductRepository productRepository;
                 orderItem.setPrice(productLine.getPrice());
                 orderItem.setProduct(product);
                 price += productLine.getPrice();
-                System.out.println(price);
                 orderItem.setOrder(order);
                 product.setSale(true);
                 productRepository.save(product);

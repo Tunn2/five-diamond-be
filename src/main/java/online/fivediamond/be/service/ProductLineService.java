@@ -142,6 +142,7 @@ public class ProductLineService {
     public void deleteById(long id) {
         ProductLine productLine = productLineRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         productLine.setDeleted(true);
+        productLineRepository.save(productLine);
     }
 
     public List<ProductLine> getAvailableProductLine() {
