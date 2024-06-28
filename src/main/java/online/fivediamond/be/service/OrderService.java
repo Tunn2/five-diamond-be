@@ -3,6 +3,8 @@ package online.fivediamond.be.service;
 import online.fivediamond.be.entity.*;
 import online.fivediamond.be.enums.OrderStatus;
 import online.fivediamond.be.model.order.OrderCreationRequest;
+import online.fivediamond.be.model.order.OrderResponse;
+import online.fivediamond.be.model.order.OrderStatusUpdateRequest;
 import online.fivediamond.be.repository.*;
 import online.fivediamond.be.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,6 @@ ProductRepository productRepository;
         Account account = accountUtil.accountCurrent();
         Cart cart = cartRepository.findById(account.getCart().getId()).orElseThrow();
         Set<CartItem> cartItems = cart.getCartItems();
-
         double price = 0;
         if(cartItems.isEmpty()) {
             throw new RuntimeException("Cart is empty");
@@ -120,7 +121,29 @@ ProductRepository productRepository;
         return orderRepository.findAll();
     }
 
-    public Order getOrderById(long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+    public OrderResponse getOrderById(long id) {
+        OrderResponse orderResponse = new OrderResponse();
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        Set<OrderItem> orderItems = orderItemRepository.findByOrderId(id);
+
+        orderResponse.setOrderItems(orderItems);
+        orderResponse.setOrderStatus(order.getOrderStatus());
+        orderResponse.setOrderDate(order.getOrderDate());
+        orderResponse.setId(id);
+        orderResponse.setAddress(order.getAddress());
+        orderResponse.setFullname(order.getFullname());
+        orderResponse.setNote(order.getNote());
+        orderResponse.setPhone(order.getPhone());
+        orderResponse.setTotalAmount(order.getTotalAmount());
+        orderResponse.setShippingDate(order.getShippingDate());
+        orderResponse.setAccount(order.getAccount());
+        return orderResponse;
     }
+
+    public Order updateOrderStatus(long id, OrderStatusUpdateRequest request) {
+        Order order = orderRepository.findById(id).orElseThrow();
+        order.setOrderStatus(request.getOrderStatus());
+        return orderRepository.save(order);
+    }
+
 }

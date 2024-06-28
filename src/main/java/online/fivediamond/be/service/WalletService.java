@@ -1,8 +1,10 @@
 package online.fivediamond.be.service;
 
+//import online.fivediamond.be.entity.Transaction;
 import online.fivediamond.be.entity.Account;
-import online.fivediamond.be.entity.Order;
+import online.fivediamond.be.entity.Cart;
 import online.fivediamond.be.model.RechargeRequestDTO;
+//import online.fivediamond.be.repository.TransactionRepository;
 import online.fivediamond.be.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,29 +27,32 @@ public class WalletService {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    AccountUtil accountUtil;
+//    @Autowired
+////    TransactionRepository transactionRepository;
+
     public String createUrl(RechargeRequestDTO rechargeRequestDTO) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime createDate = LocalDateTime.now();
         String formattedCreateDate = createDate.format(formatter);
-//        User user = accountUtils.getCurrentUser();
 
         String orderId = UUID.randomUUID().toString().substring(0,6);
 
-//        Wallet wallet = walletRepository.findWalletByUser_Id(user.getId());
-//
+
+////
 //        Transaction transaction = new Transaction();
-//
 //        transaction.setAmount(Float.parseFloat(rechargeRequestDTO.getAmount()));
-//        transaction.setTransactionType(TransactionEnum.PENDING);
-//        transaction.setTo(wallet);
+//        transaction.setTransactionType(TransactionType.PENDING);
+//
 //        transaction.setTransactionDate(formattedCreateDate);
-//        transaction.setDescription("Recharge");
+////        transaction.setDescription("Recharge");
 //        Transaction transactionReturn = transactionRepository.save(transaction);
 
         String tmnCode = "GFERR5TJ";
         String secretKey = "5X14AYMF2OJRU9LDVIRS76HBLAAV71XD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://fivediamond.online/";
+        String returnUrl = "http://localhost:5173/thanh-toan-thanh-cong";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -60,8 +65,6 @@ public class WalletService {
         vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + orderId);
         vnpParams.put("vnp_OrderType", "other");
         vnpParams.put("vnp_Amount", rechargeRequestDTO.getAmount() +"00");
-
-//        Order order = orderService.convertCartToOrder();
 
         vnpParams.put("vnp_ReturnUrl", returnUrl);
         vnpParams.put("vnp_CreateDate", formattedCreateDate);
@@ -106,4 +109,6 @@ public class WalletService {
         }
         return result.toString();
     }
+
+
 }

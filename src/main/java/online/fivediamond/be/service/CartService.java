@@ -69,4 +69,15 @@ public class CartService {
         return account.getCart();
     }
 
+    public String checkQuantity() {
+        Account account = accountUtil.accountCurrent();
+        Cart cart = account.getCart();
+        Set<CartItem> cartItems = cart.getCartItems();
+        for(CartItem cartItem: cartItems) {
+            if(cartItem.getQuantity() > cartItem.getProductLine().getQuantity()) {
+                throw new RuntimeException("Mã sản phẩm " + cartItem.getProductLine().getId() + " trong kho đã hết! Vui lòng bỏ khỏi giỏ hàng");
+            }
+        }
+        return "OK";
+    }
 }

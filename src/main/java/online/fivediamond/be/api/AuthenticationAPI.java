@@ -78,8 +78,13 @@ public class AuthenticationAPI {
         authenticationService.resetPassword(resetPasswordRequest);
     }
 
-    @PostMapping("user/{id}")
+    @PutMapping("user/{id}")
     public ResponseEntity update(@PathVariable long id, @RequestBody AccountUpdateRequest request) {
         return ResponseEntity.ok(authenticationService.update(id, request));
     }
+
+//    @GetMapping("user/{id}")
+//    public ResponseEntity getAccountById(@PathVariable long id) {
+//        return  ResponseEntity.ok(authenticationService.getAccountById(id));
+//    }
 }

@@ -28,4 +28,10 @@ public class CartAPI {
         cartService.delete(id);
         return "Delete successfully";
     }
+
+    @GetMapping("check")
+    public ResponseEntity checkQuantity() {
+        String check = cartService.checkQuantity();
+        return ResponseEntity.ok(check);
+    }
 }

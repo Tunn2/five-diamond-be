@@ -2,7 +2,9 @@ package online.fivediamond.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.model.order.OrderCreationRequest;
+import online.fivediamond.be.model.order.OrderStatusUpdateRequest;
 import online.fivediamond.be.service.OrderService;
+import online.fivediamond.be.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,11 @@ public class OrderAPI {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    WalletService walletService;
+
     @PostMapping
     public ResponseEntity create(@RequestBody OrderCreationRequest request) {
-        System.out.println(request);
         return ResponseEntity.ok(orderService.convertCartToOrder(request));
     }
 
@@ -59,6 +63,11 @@ public class OrderAPI {
     @GetMapping("delivered")
     public ResponseEntity getDeliveredOrders() {
         return ResponseEntity.ok(orderService.getDeliveredOrders());
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity updateOrderStatus(@PathVariable long id, @RequestBody OrderStatusUpdateRequest request) {
+        return ResponseEntity.ok(orderService.updateOrderStatus(id, request));
     }
 
 }
