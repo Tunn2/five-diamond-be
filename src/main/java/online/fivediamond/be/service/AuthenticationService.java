@@ -188,4 +188,8 @@ public class AuthenticationService implements UserDetailsService {
         account.setDob(request.getDob());
         return authenticationRepository.save(account);
     }
+
+//    public AccountResponse getAccountById(long id) {
+//        return authenticationRepository.findById(id).orElseThrow();
+//    }
 }

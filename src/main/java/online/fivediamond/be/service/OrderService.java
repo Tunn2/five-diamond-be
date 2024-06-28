@@ -3,6 +3,8 @@ package online.fivediamond.be.service;
 import online.fivediamond.be.entity.*;
 import online.fivediamond.be.enums.OrderStatus;
 import online.fivediamond.be.model.order.OrderCreationRequest;
+import online.fivediamond.be.model.order.OrderResponse;
+import online.fivediamond.be.model.order.OrderStatusUpdateRequest;
 import online.fivediamond.be.repository.*;
 import online.fivediamond.be.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -46,14 +47,12 @@ ProductRepository productRepository;
         Account account = accountUtil.accountCurrent();
         Cart cart = cartRepository.findById(account.getCart().getId()).orElseThrow();
         Set<CartItem> cartItems = cart.getCartItems();
-
         double price = 0;
         if(cartItems.isEmpty()) {
             throw new RuntimeException("Cart is empty");
         }
         Order order = new Order();
         order = orderRepository.save(order);
-        // productLines;
         for(CartItem item: cartItems) {
             ProductLine productLine = item.getProductLine();
             List<Product> products = productRepository.findAvailableProducts(item.getQuantity(), productLine.getId());
@@ -61,7 +60,6 @@ ProductRepository productRepository;
                 orderRepository.deleteById(order.getId());
                 throw new RuntimeException("Quantity of " + item.getProductLine().getName() + " in stock is not enough");
             }
-
             int count = 0;
             for(Product product: products){
                 count++;
@@ -69,7 +67,6 @@ ProductRepository productRepository;
                 orderItem.setPrice(productLine.getPrice());
                 orderItem.setProduct(product);
                 price += productLine.getPrice();
-                System.out.println(price);
                 orderItem.setOrder(order);
                 product.setSale(true);
                 productRepository.save(product);
@@ -124,7 +121,29 @@ ProductRepository productRepository;
         return orderRepository.findAll();
     }
 
-    public Order getOrderById(long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+    public OrderResponse getOrderById(long id) {
+        OrderResponse orderResponse = new OrderResponse();
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        Set<OrderItem> orderItems = orderItemRepository.findByOrderId(id);
+
+        orderResponse.setOrderItems(orderItems);
+        orderResponse.setOrderStatus(order.getOrderStatus());
+        orderResponse.setOrderDate(order.getOrderDate());
+        orderResponse.setId(id);
+        orderResponse.setAddress(order.getAddress());
+        orderResponse.setFullname(order.getFullname());
+        orderResponse.setNote(order.getNote());
+        orderResponse.setPhone(order.getPhone());
+        orderResponse.setTotalAmount(order.getTotalAmount());
+        orderResponse.setShippingDate(order.getShippingDate());
+        orderResponse.setAccount(order.getAccount());
+        return orderResponse;
     }
+
+    public Order updateOrderStatus(long id, OrderStatusUpdateRequest request) {
+        Order order = orderRepository.findById(id).orElseThrow();
+        order.setOrderStatus(request.getOrderStatus());
+        return orderRepository.save(order);
+    }
+
 }

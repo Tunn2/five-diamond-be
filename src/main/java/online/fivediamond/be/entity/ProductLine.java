@@ -57,6 +57,10 @@ public class ProductLine {
     Set<Product> products;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "productLine")
+    @OneToMany(mappedBy = "productLine", cascade = CascadeType.ALL)
     Set<CartItem> cartItem;
+
+    @OneToMany(mappedBy = "productLine", cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<Comment> comments;
 }

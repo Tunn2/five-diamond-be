@@ -53,6 +53,10 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     Set<Order> orders;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    Set<Comment> comments;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.toString()));

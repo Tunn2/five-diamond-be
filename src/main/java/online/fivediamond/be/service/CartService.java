@@ -1,6 +1,5 @@
 package online.fivediamond.be.service;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.entity.Account;
 import online.fivediamond.be.entity.Cart;
 import online.fivediamond.be.entity.CartItem;
@@ -70,9 +69,15 @@ public class CartService {
         return account.getCart();
     }
 
-//    boolean checkQuantity() {
-//        Account account = accountUtil.accountCurrent();
-//        Cart cart = account.getCart();
-//        int quantityInStock =
-//    }
+    public String checkQuantity() {
+        Account account = accountUtil.accountCurrent();
+        Cart cart = account.getCart();
+        Set<CartItem> cartItems = cart.getCartItems();
+        for(CartItem cartItem: cartItems) {
+            if(cartItem.getQuantity() > cartItem.getProductLine().getQuantity()) {
+                throw new RuntimeException("Mã sản phẩm " + cartItem.getProductLine().getId() + " trong kho đã hết! Vui lòng bỏ khỏi giỏ hàng");
+            }
+        }
+        return "OK";
+    }
 }
