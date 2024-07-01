@@ -50,4 +50,7 @@ public class CollectionService {
         return collectionRepository.save(collection);
     }
 
+    public List<Collection> getAllCollections() {
+        return collectionRepository.findAll();
+    }
 }

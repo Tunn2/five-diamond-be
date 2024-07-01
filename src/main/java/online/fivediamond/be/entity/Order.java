@@ -32,7 +32,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     Set<OrderItem> orderItems;
 

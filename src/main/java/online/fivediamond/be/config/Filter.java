@@ -61,7 +61,9 @@ public class Filter extends OncePerRequestFilter {
             "/api/certificate/{id}",
             "/api/certificate/available",
             "/api/collection",
-            "/api/collection/{id}"
+            "/api/collection/{id}",
+            "/api/comment/{id}",
+            "/api/promotion/code"
     );
 
     private boolean isPermitted(String uri) {
