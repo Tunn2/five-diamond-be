@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -20,6 +22,7 @@ public class Comment {
     @JoinColumn(name = "product_line_id")
     ProductLine productLine;
 
+    String createAt;
     String content;
     boolean isDeleted;
 }

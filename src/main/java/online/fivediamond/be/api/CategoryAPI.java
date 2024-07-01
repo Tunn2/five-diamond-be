@@ -19,7 +19,7 @@ public class CategoryAPI {
     CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity createNewCategory(@RequestBody CategoryCreationRequest request) {
+    public ResponseEntity createNewCategory(@RequestBody CategoryCreationRequest request, @RequestParam long id) {
         return ResponseEntity.ok(categoryService.create(request));
     }
 

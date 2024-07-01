@@ -1,7 +1,9 @@
 package online.fivediamond.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import online.fivediamond.be.entity.Order;
 import online.fivediamond.be.model.order.OrderCreationRequest;
+import online.fivediamond.be.model.order.OrderResponse;
 import online.fivediamond.be.model.order.OrderStatusUpdateRequest;
 import online.fivediamond.be.service.OrderService;
 import online.fivediamond.be.service.WalletService;
@@ -37,7 +39,8 @@ public class OrderAPI {
 
     @GetMapping("{id}")
     public ResponseEntity getOrderById(@PathVariable long id) {
-        return ResponseEntity.ok(orderService.getOrderById(id));
+        Order order = orderService.getOrderById(id);
+        return ResponseEntity.ok(order);
     }
 
     @GetMapping("pending")

@@ -10,6 +10,7 @@ import online.fivediamond.be.repository.ProductLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,6 +31,7 @@ public class CommentService {
         comment.setAccount(account);
         comment.setProductLine(productLine);
         comment.setContent(request.getContent());
+        comment.setCreateAt(new Date().toString());
         comment.setDeleted(false);
         return commentRepository.save(comment);
     }
@@ -41,7 +43,7 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByProductLine(long id) {
-        return commentRepository.findByProductLineId(id);
+        return commentRepository.findByProductLineIdAndIsDeletedFalse(id);
     }
 
     public List<Comment> getAllComments() {

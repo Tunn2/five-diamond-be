@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class CommentCreationRequest {
+    String content;
     long accountId;
     long productLineId;
-    String content;
     boolean isDeleted;
 }

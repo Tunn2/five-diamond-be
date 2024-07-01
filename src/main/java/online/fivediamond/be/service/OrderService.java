@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,20 +50,21 @@ ProductRepository productRepository;
         Cart cart = cartRepository.findById(account.getCart().getId()).orElseThrow();
         Set<CartItem> cartItems = cart.getCartItems();
         double price = 0;
-        if(cartItems.isEmpty()) {
+        List<OrderItem> orderItems = new ArrayList<>();
+        if (cartItems.isEmpty()) {
             throw new RuntimeException("Cart is empty");
         }
         Order order = new Order();
         order = orderRepository.save(order);
-        for(CartItem item: cartItems) {
+        for (CartItem item : cartItems) {
             ProductLine productLine = item.getProductLine();
             List<Product> products = productRepository.findAvailableProducts(item.getQuantity(), productLine.getId());
-            if(products.size() < item.getQuantity()) {
+            if (products.size() < item.getQuantity()) {
                 orderRepository.deleteById(order.getId());
                 throw new RuntimeException("Quantity of " + item.getProductLine().getName() + " in stock is not enough");
             }
             int count = 0;
-            for(Product product: products){
+            for (Product product : products) {
                 count++;
                 OrderItem orderItem = new OrderItem();
                 orderItem.setPrice(productLine.getPrice());
@@ -71,13 +74,14 @@ ProductRepository productRepository;
                 product.setSale(true);
                 productRepository.save(product);
                 orderItemRepository.save(orderItem);
+                orderItems.add(orderItem);
             }
             productLine.setQuantity(productLine.getQuantity() - count);
             productLineRepository.save(productLine);
-            //dit me dong 72 deo co transactional voi modifying la no loi cay vc
             cartItemRepository.deleteCartItem(item.getId());
         }
-        order.setOrderItems(order.getOrderItems());
+        Set<OrderItem> orderItemSet = new HashSet<>(orderItems);
+        order.setOrderItems(orderItemSet);
         order.setTotalAmount(price);
         order.setAccount(account);
         order.setPhone(request.getPhone());
@@ -85,11 +89,13 @@ ProductRepository productRepository;
         order.setOrderDate(LocalDateTime.now());
         order.setFullname(request.getFullname());
         order.setOrderStatus(request.getOrderStatus());
+        order.setNote(request.getNote());
         account.setRewardPoint(account.getRewardPoint() + price);
         authenticationRepository.save(account);
-        orderRepository.save(order);
+        order = orderRepository.save(order); // Save the order again to ensure it contains all order items
         return order;
     }
+
 
     public List<Order> getOrdersByAccountId() {
         Account account = accountUtil.accountCurrent();
@@ -121,23 +127,15 @@ ProductRepository productRepository;
         return orderRepository.findAll();
     }
 
-    public OrderResponse getOrderById(long id) {
-        OrderResponse orderResponse = new OrderResponse();
+    public Order getOrderById(long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-        Set<OrderItem> orderItems = orderItemRepository.findByOrderId(id);
-
-        orderResponse.setOrderItems(orderItems);
-        orderResponse.setOrderStatus(order.getOrderStatus());
-        orderResponse.setOrderDate(order.getOrderDate());
-        orderResponse.setId(id);
-        orderResponse.setAddress(order.getAddress());
-        orderResponse.setFullname(order.getFullname());
-        orderResponse.setNote(order.getNote());
-        orderResponse.setPhone(order.getPhone());
-        orderResponse.setTotalAmount(order.getTotalAmount());
-        orderResponse.setShippingDate(order.getShippingDate());
-        orderResponse.setAccount(order.getAccount());
-        return orderResponse;
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(id);
+        Set<OrderItem> orderItemSet = new HashSet<>(orderItems);
+        for(OrderItem item: orderItemSet) {
+            System.out.println(item.getId());
+        }
+        order.setOrderItems(orderItemSet);
+        return order;
     }
 
     public Order updateOrderStatus(long id, OrderStatusUpdateRequest request) {

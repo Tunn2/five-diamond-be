@@ -23,4 +23,9 @@ public class CollectionAPI {
     public ResponseEntity update(@PathVariable long id, CollectionUpdateRequest request) {
         return  ResponseEntity.ok(collectionService.update(id, request));
     }
+
+    @GetMapping
+    public ResponseEntity getAllCollections() {
+        return ResponseEntity.ok(collectionService.getAllCollections());
+    }
 }
