@@ -74,7 +74,7 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("reset-password")
-    public void loginGg(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+    public void resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
         authenticationService.resetPassword(resetPasswordRequest);
     }
 

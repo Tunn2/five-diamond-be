@@ -12,5 +12,7 @@ public class OrderCreationRequest {
     LocalDate orderDate;
     String note;
     String address;
+    String promotionCode;
+    double totalAmount;
     OrderStatus orderStatus = OrderStatus.PENDING;
 }

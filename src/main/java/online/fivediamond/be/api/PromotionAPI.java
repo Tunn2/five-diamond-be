@@ -4,11 +4,10 @@ package online.fivediamond.be.api;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.model.promotion.PromotionCreationRequest;
 import online.fivediamond.be.service.PromotionService;
+import online.fivediamond.be.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.ParseException;
 
 @RequestMapping("api/promotion")
 @RestController
@@ -16,10 +15,11 @@ import java.text.ParseException;
 public class PromotionAPI {
     @Autowired
     PromotionService promotionService;
-
+    @Autowired
+    DateUtils dateUtils;
 
     @PostMapping
-    public ResponseEntity create(PromotionCreationRequest request) {
+    public ResponseEntity create(@RequestBody PromotionCreationRequest request) {
         return ResponseEntity.ok(promotionService.create(request));
     }
 
@@ -38,9 +38,10 @@ public class PromotionAPI {
         return ResponseEntity.ok(promotionService.deletePromotionById(id));
     }
 
-    @GetMapping("/code")
-    public ResponseEntity getPromotionByCode(@RequestBody String code) throws ParseException {
+    @GetMapping("/code/{code}")
+    public ResponseEntity getPromotionByCode(@PathVariable String code) {
         return ResponseEntity.ok(promotionService.getPromotionByCode(code));
     }
+
 
 }

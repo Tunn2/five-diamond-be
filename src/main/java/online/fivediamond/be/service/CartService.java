@@ -27,7 +27,6 @@ public class CartService {
 
     @Autowired
     AccountUtil accountUtil;
-
     @Autowired
     CartItemRepository cartItemRepository;
     public String addToCart(long id) {
@@ -44,7 +43,7 @@ public class CartService {
         } else {
             for (CartItem item : cartItems) {
                 if (item.getProductLine().getId() == id) {
-                    if(item.getQuantity() > item.getProductLine().getQuantity()) {
+                    if(item.getQuantity() >= item.getProductLine().getQuantity()) {
                         throw new RuntimeException("The quantity in stock is not enough");
                     }
                     item.setQuantity(item.getQuantity() + 1);
@@ -67,6 +66,24 @@ public class CartService {
     public Cart getCart() {
         Account account = accountUtil.accountCurrent();
         return account.getCart();
+    }
+
+    public CartItem add(long id) {
+        CartItem cartItem = cartItemRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        if(cartItem.getQuantity() >= cartItem.getProductLine().getQuantity()) {
+            throw new RuntimeException("Trong kho hàng không đủ");
+        }
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        return cartItemRepository.save(cartItem);
+    }
+
+    public CartItem removeOneProduct(long id) {
+        CartItem cartItem = cartItemRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        if(cartItem.getQuantity() > cartItem.getProductLine().getQuantity()) {
+            throw new RuntimeException("Trong kho hàng không đủ");
+        }
+        cartItem.setQuantity(cartItem.getQuantity() - 1);
+        return cartItemRepository.save(cartItem);
     }
 
     public String checkQuantity() {
