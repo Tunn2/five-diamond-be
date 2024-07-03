@@ -1,15 +1,9 @@
 package online.fivediamond.be.service;
 
-import online.fivediamond.be.entity.Category;
-import online.fivediamond.be.entity.Diamond;
-import online.fivediamond.be.entity.Product;
-import online.fivediamond.be.entity.ProductLine;
+import online.fivediamond.be.entity.*;
 import online.fivediamond.be.model.productLine.ProductLineCreationRequest;
 import online.fivediamond.be.model.productLine.ProductLineUpdateRequest;
-import online.fivediamond.be.repository.CategoryRepository;
-import online.fivediamond.be.repository.DiamondRepository;
-import online.fivediamond.be.repository.ProductLineRepository;
-import online.fivediamond.be.repository.ProductRepository;
+import online.fivediamond.be.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,26 +27,35 @@ public class ProductLineService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    CollectionRepository collectionRepository;
+
     public ProductLine create(ProductLineCreationRequest request) {
         ProductLine productLine = new ProductLine();
         List<Diamond> diamonds = diamondRepository.findAllById(request.getDiamondID());
-
+        Collection collection = null;
+       try {
+            collection = collectionRepository.findById(request.getCollectionID()).orElseThrow();
+        } catch (Exception ex) {
+            collection = null;
+        }
         double priceOfMetal = 0;
         double priceOfDiamond = diamonds.get(0).getPrice();
-        if(request.getKarat().equals("24K")) {
-            if(request.getTypeOfSub().toString().equals("DIAMOND")) {
+        if (request.getKarat().equals("24K")) {
+            if (request.getTypeOfSub().toString().equals("DIAMOND")) {
                 priceOfMetal = GOLD_24K * request.getWeight() + request.getQuantityOfSub() * SUB_DIAMOND;
             } else if (request.getTypeOfSub().toString().equals("DIAMOND")) {
                 priceOfMetal = GOLD_24K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
             }
         } else if (request.getKarat().equals("18K")) {
-            if(request.getTypeOfSub().toString().equals("DIAMOND")) {
+            if (request.getTypeOfSub().toString().equals("DIAMOND")) {
                 priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_DIAMOND;
             } else if (productLine.getTypeOfSub().toString().equals("DIAMOND")) {
                 priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
             }
         }
         Category category = categoryRepository.findById(request.getCategoryID()).orElseThrow();
+        productLine.setCollection(collection);
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
         productLine.setGender(request.getGender());
@@ -61,7 +64,7 @@ public class ProductLineService {
         productLine.setMetal(request.getMetal());
         productLine.setKarat(request.getKarat());
         productLine.setWeight(request.getWeight());
-        productLine.setCategory(categoryRepository.findById(request.getCategoryID()).orElseThrow());
+        productLine.setCategory(category);
         productLine.setImgURL(request.getImgURL());
         productLine.setTypeOfSub(request.getTypeOfSub());
         productLine.setQuantityOfSub(request.getQuantityOfSub());

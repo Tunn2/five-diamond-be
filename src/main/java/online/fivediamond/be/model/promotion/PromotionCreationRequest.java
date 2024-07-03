@@ -6,7 +6,6 @@ import lombok.Data;
 public class PromotionCreationRequest {
     String code;
     double discountPercentage;
-    int quantity;
     String startDate;
     String endDate;
 }

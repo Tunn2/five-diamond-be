@@ -158,7 +158,7 @@ public class AuthenticationService implements UserDetailsService {
         emailDetail.setSubject("Reset password for account: " + account.getEmail());
         emailDetail.setMsgBody("");
         emailDetail.setButtonValue("Reset password");
-        emailDetail.setLink("http://157.245.145.162/doi-mat-khau?token=" + tokenService.generateToken(account));
+        emailDetail.setLink("http://fivediamond/doi-mat-khau?token=" + tokenService.generateToken(account));
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -172,10 +172,10 @@ public class AuthenticationService implements UserDetailsService {
         return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+    public Account resetPassword(ResetPasswordRequest resetPasswordRequest) {
         Account account = getCurrentAccount();
         account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
-        authenticationRepository.save(account);
+        return authenticationRepository.save(account);
     }
 
     public Account update(long id, AccountUpdateRequest request) {

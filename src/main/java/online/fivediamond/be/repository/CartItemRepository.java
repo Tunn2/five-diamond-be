@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
-    //Transactional voi Modifying la cai cho' gi`????
+    //Transactional
     @Transactional
     @Modifying
     @Query(value = "delete from cart_item where id = :id", nativeQuery = true)

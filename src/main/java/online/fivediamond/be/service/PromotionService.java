@@ -3,12 +3,10 @@ package online.fivediamond.be.service;
 import online.fivediamond.be.entity.Promotion;
 import online.fivediamond.be.model.promotion.PromotionCreationRequest;
 import online.fivediamond.be.repository.PromotionRepository;
+import online.fivediamond.be.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,11 +15,13 @@ public class PromotionService {
     @Autowired
     PromotionRepository promotionRepository;
 
+    @Autowired
+    DateUtils dateUtils;
+
     public Promotion create(PromotionCreationRequest request) {
         Promotion promotion = new Promotion();
         promotion.setCode(request.getCode());
         promotion.setDiscountPercentage(request.getDiscountPercentage());
-        promotion.setQuantity(request.getQuantity());
         promotion.setStartDate(request.getStartDate());
         promotion.setEndDate(request.getEndDate());
         promotion.setDeleted(false);
@@ -42,16 +42,20 @@ public class PromotionService {
         return promotionRepository.save(promotion);
     }
 
-    public Promotion getPromotionByCode(String code) throws ParseException {
+    public Promotion getPromotionByCode(String code) {
         Promotion promotion = promotionRepository.findByCode(code);
-        String startDateStr = promotion.getStartDate();
-        String endDateStr= promotion.getEndDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        if (promotion == null) {
+            throw new RuntimeException("Not found");
+        }
+        if(dateUtils.isExpired(promotion.getEndDate())) {
+            throw new RuntimeException("Expired");
+        }
 
-        Date startDate = dateFormat.parse(startDateStr);
-        Date endDate = dateFormat.parse(endDateStr);
-        if (startDate.compareTo(endDate) >= 0)
-            return promotion;
-        return null;
+        if(dateUtils.isNotYet(promotion.getStartDate())) {
+            throw new RuntimeException("Not yet start");
+        }
+
+        return promotion;
     }
+
 }

@@ -34,4 +34,14 @@ public class CartAPI {
         String check = cartService.checkQuantity();
         return ResponseEntity.ok(check);
     }
+
+    @PutMapping("add/{id}")
+    public ResponseEntity addCartItem(@PathVariable long id) {
+        return ResponseEntity.ok(cartService.add(id));
+    }
+
+    @PutMapping("remove/{id}")
+    public ResponseEntity updateQuantityCartItem(@PathVariable long id) {
+        return ResponseEntity.ok(cartService.removeOneProduct(id));
+    }
 }

@@ -29,6 +29,10 @@ public class Order {
     double totalAmount;
     Date shippingDate;
 
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    Promotion promotion;
+
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
 
@@ -36,7 +40,15 @@ public class Order {
     Set<OrderItem> orderItems;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
-    Account account;
+    @JoinColumn(name = "customer_id")
+    Account customer;
+
+    @ManyToOne
+    @JoinColumn(name = "shipper_id")
+    Account shipper;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    Account staff;
 
 }

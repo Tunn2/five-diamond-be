@@ -50,8 +50,16 @@ public class Account implements UserDetails {
     Cart cart;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
-    Set<Order> orders;
+    @OneToMany(mappedBy = "customer")
+    Set<Order> ordersCus;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "staff")
+    Set<Order> ordersStaff;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "shipper")
+    Set<Order> ordersShip;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")

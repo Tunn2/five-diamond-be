@@ -68,9 +68,9 @@ public class OrderAPI {
         return ResponseEntity.ok(orderService.getDeliveredOrders());
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity updateOrderStatus(@PathVariable long id, @RequestBody OrderStatusUpdateRequest request) {
-        return ResponseEntity.ok(orderService.updateOrderStatus(id, request));
+    @PutMapping("{id}&{accountID}")
+    public ResponseEntity updateOrderStatus(@PathVariable long id, @RequestBody OrderStatusUpdateRequest request, @PathVariable long accountID) {
+        return ResponseEntity.ok(orderService.updateOrderStatus(id, request, accountID));
     }
 
 }
