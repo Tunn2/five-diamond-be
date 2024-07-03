@@ -32,4 +32,8 @@ public class Product {
     @JsonIgnore
     @OneToOne(mappedBy = "product",cascade = CascadeType.ALL)
     OrderItem orderItem;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    Warranty warranty;
 }

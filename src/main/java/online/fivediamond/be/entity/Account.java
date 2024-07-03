@@ -65,6 +65,10 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     Set<Comment> comments;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    Set<Warranty> warranties;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.toString()));

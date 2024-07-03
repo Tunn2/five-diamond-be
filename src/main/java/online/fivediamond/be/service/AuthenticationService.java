@@ -189,7 +189,6 @@ public class AuthenticationService implements UserDetailsService {
         return authenticationRepository.save(account);
     }
 
-//    public AccountResponse getAccountById(long id) {
-//        return authenticationRepository.findById(id).orElseThrow();
-//    }
+
+
 }

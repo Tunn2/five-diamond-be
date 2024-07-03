@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +48,9 @@ ProductRepository productRepository;
     @Autowired
     PromotionRepository promotionRepository;
 
+    @Autowired
+    WarrantyRepository warrantyRepository;
+
     @Transactional
     public Order convertCartToOrder(OrderCreationRequest request) {
         Account account = accountUtil.accountCurrent();
@@ -74,11 +78,16 @@ ProductRepository productRepository;
             for (Product product : products) {
                 count++;
                 OrderItem orderItem = new OrderItem();
+                Warranty warranty = new Warranty();
+                warranty.setAccount(account);
+                warranty.setOrderDate(LocalDate.now());
+                warranty.setExpiredDate(LocalDate.now().plusYears(2));
+                warranty.setProduct(product);
                 orderItem.setPrice(productLine.getPrice());
                 orderItem.setProduct(product);
-//                price += productLine.getPrice();
                 orderItem.setOrder(order);
                 product.setSale(true);
+                warrantyRepository.save(warranty);
                 productRepository.save(product);
                 orderItemRepository.save(orderItem);
                 orderItems.add(orderItem);
@@ -157,5 +166,7 @@ ProductRepository productRepository;
         order.setOrderStatus(request.getOrderStatus());
         return orderRepository.save(order);
     }
+
+    
 
 }
