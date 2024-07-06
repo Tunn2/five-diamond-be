@@ -25,6 +25,7 @@ public class ProductLine {
     String name;
     double priceRate;
     double price;
+    double finalPrice;
     double weight;
     String metal;
     String karat;

@@ -3,7 +3,9 @@ package online.fivediamond.be.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.fivediamond.be.enums.OrderStatus;
 
@@ -15,6 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "orders")
+
 public class Order {
 
     @Id

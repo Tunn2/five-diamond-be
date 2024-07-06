@@ -44,9 +44,9 @@ public class ProductLineAPI {
         return ResponseEntity.ok(productLineService.delete(id));
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity search() {
-//
-//    }
+    @GetMapping("search")
+    public ResponseEntity getDiamonds(@RequestParam String name) {
+        return ResponseEntity.ok(productLineService.search(name));
+    }
 
 }

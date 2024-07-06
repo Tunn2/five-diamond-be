@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import online.fivediamond.be.entity.Account;
-//import online.fivediamond.be.entity.Cart;
 import online.fivediamond.be.entity.Cart;
 import online.fivediamond.be.enums.Role;
 import online.fivediamond.be.exception.AuthException;
@@ -12,7 +11,6 @@ import online.fivediamond.be.exception.BadRequestException;
 import online.fivediamond.be.model.*;
 import online.fivediamond.be.model.account.*;
 import online.fivediamond.be.repository.AuthenticationRepository;
-//import online.fivediamond.be.repository.CartRepository;
 import online.fivediamond.be.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +23,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -61,10 +60,14 @@ public class AuthenticationService implements UserDetailsService {
         account.setAddress(registerRequest.getAddress());
         account.setGender(registerRequest.getGender());
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        Cart cart = new Cart();
-        cart = cartRepository.save(cart);
-        account.setCart(cart);
+        account.setCreateAt(LocalDate.now());
+        if(account.getRole() == Role.CUSTOMER) {
+            Cart cart = new Cart();
+            cart = cartRepository.save(cart);
+            account.setCart(cart);
+        }
         account = authenticationRepository.save(account);
+
         return account;
     }
 

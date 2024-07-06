@@ -1,0 +1,140 @@
+package online.fivediamond.be.service;
+
+
+import online.fivediamond.be.entity.Order;
+import online.fivediamond.be.entity.OrderItem;
+import online.fivediamond.be.entity.Product;
+import online.fivediamond.be.entity.ProductLine;
+import online.fivediamond.be.enums.Role;
+import online.fivediamond.be.model.dto.AccountTotalResponse;
+import online.fivediamond.be.model.dto.RevenueTotalResponse;
+import online.fivediamond.be.repository.AuthenticationRepository;
+import online.fivediamond.be.repository.OrderRepository;
+import online.fivediamond.be.repository.ProductLineRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+@Service
+public class DashboardService {
+
+    @Autowired
+    AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    public AccountTotalResponse countUser() {
+        int customerCount = authenticationRepository.countByRole(Role.CUSTOMER.toString());
+        int managerCount = authenticationRepository.countByRole(Role.MANAGER.toString());
+        int adminCount = authenticationRepository.countByRole(Role.ADMIN.toString());
+        int deliverCount = authenticationRepository.countByRole(Role.DELIVERY.toString());
+        int staffCount = authenticationRepository.countByRole(Role.SALES.toString());
+        int total = customerCount + adminCount + deliverCount + staffCount + managerCount;
+
+        AccountTotalResponse accountTotalResponse = new AccountTotalResponse();
+        accountTotalResponse.setMemberTotal(total);
+        accountTotalResponse.setAdminQuantity(adminCount);
+        accountTotalResponse.setDeliverQuantity(deliverCount);
+        accountTotalResponse.setCustomerQuantity(customerCount);
+        accountTotalResponse.setManagerQuantity(managerCount);
+        accountTotalResponse.setSalesQuantity(staffCount);
+        return accountTotalResponse;
+    }
+
+    public List<AccountTotalResponse> getAccountByMonth(int year) {
+        List<AccountTotalResponse> list = new ArrayList<>();
+        for(int i = 1; i <= 12; i++) {
+            int customerCount = authenticationRepository.countByRoleByMonth(Role.CUSTOMER.toString(), i, year);
+            int managerCount = authenticationRepository.countByRoleByMonth(Role.MANAGER.toString(), i, year);
+            int adminCount = authenticationRepository.countByRoleByMonth(Role.ADMIN.toString(), i, year);
+            int deliverCount = authenticationRepository.countByRoleByMonth(Role.DELIVERY.toString(), i, year);
+            int staffCount = authenticationRepository.countByRoleByMonth(Role.SALES.toString(), i, year);
+            int total = customerCount + adminCount + deliverCount + staffCount + managerCount;
+
+            AccountTotalResponse accountTotalResponse = new AccountTotalResponse();
+            accountTotalResponse.setMemberTotal(total);
+            accountTotalResponse.setAdminQuantity(adminCount);
+            accountTotalResponse.setDeliverQuantity(deliverCount);
+            accountTotalResponse.setCustomerQuantity(customerCount);
+            accountTotalResponse.setManagerQuantity(managerCount);
+            accountTotalResponse.setSalesQuantity(staffCount);
+            accountTotalResponse.setMonth(i);
+            list.add(accountTotalResponse);
+        }
+        return list;
+    }
+
+    public List<RevenueTotalResponse> getRevenueByMonth(int year) {
+        List<RevenueTotalResponse> list = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            List<Order> orderList = orderRepository.findOrderByOrderDate(i, year);
+            double totalRevenueByMonth = 0;
+            double totalCost = 0;
+            double totalProfitByMonth = 0;
+            if(!orderList.isEmpty()) {
+                for (Order order: orderList) {
+                    Set<OrderItem> orderItems = order.getOrderItems();
+                    for(OrderItem orderItem : orderItems) {
+                        Product product = orderItem.getProduct();
+                        ProductLine productLine = product.getProductLine();
+                        totalCost += productLine.getPrice();
+                    }
+                    totalRevenueByMonth += order.getTotalAmount();
+                }
+            }
+            totalProfitByMonth = totalRevenueByMonth - totalCost;
+
+            list.add(new RevenueTotalResponse(i, totalRevenueByMonth, totalProfitByMonth, orderList));
+        }
+
+        return list;
+    }
+
+//    public List<ProfitResponseDTO> getProfitByMonth(int year) {
+//        int i;
+//        List<ProfitResponseDTO> list =  new ArrayList<>();
+//        float revenuePortal;
+//        List<SystemProfit> systemProfits;
+//        for(i = 1 ; i <= 12 ; i++){
+//            List<ListSystemProfitMapByDTO> listSystemProfitMapByDTOS = new ArrayList<>();
+//            int month = i;
+//            try {
+//                revenuePortal = systemProfitRepository.getProfitByMonth(month, year);
+//                systemProfits = systemProfitRepository.getAllHistorySystemProfit(month ,year);
+//            }catch(Exception e){
+//                revenuePortal = 0;
+//                systemProfits = new ArrayList<>();
+//            }
+//            for(SystemProfit systemProfit :systemProfits){
+//                ListSystemProfitMapByDTO listSystemProfitMapByDTO = new ListSystemProfitMapByDTO();
+//                listSystemProfitMapByDTO.setId(systemProfit.getId());
+//                listSystemProfitMapByDTO.setDescription(systemProfit.getDescription());
+//                listSystemProfitMapByDTO.setBalance(systemProfit.getBalance());
+//                listSystemProfitMapByDTO.setDate(systemProfit.getDate());
+//                if(systemProfit.getTransaction() != null){
+//                    listSystemProfitMapByDTO.setTransaction(systemProfit.getTransaction());
+//                    if(systemProfit.getTransaction().getFrom() != null){
+//                        listSystemProfitMapByDTO.setUserForm(systemProfit.getTransaction().getFrom().getUser());
+//                    }
+//                    if(systemProfit.getTransaction().getTo() != null){
+//                        listSystemProfitMapByDTO.setUserTo(systemProfit.getTransaction().getTo().getUser());
+//                    }
+//                }
+//                listSystemProfitMapByDTOS.add(listSystemProfitMapByDTO);
+//            }
+//            ProfitResponseDTO responseDTO = new ProfitResponseDTO();
+//            responseDTO.setMonth(month);
+//            responseDTO.setRevenuePortal(revenuePortal);
+//            responseDTO.setSystemProfits(listSystemProfitMapByDTOS);
+//            list.add(responseDTO);
+//        }
+//
+//        return list;
+//    }
+
+
+}

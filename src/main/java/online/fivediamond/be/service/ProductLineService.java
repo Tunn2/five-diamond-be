@@ -33,12 +33,8 @@ public class ProductLineService {
     public ProductLine create(ProductLineCreationRequest request) {
         ProductLine productLine = new ProductLine();
         List<Diamond> diamonds = diamondRepository.findAllById(request.getDiamondID());
-        Collection collection = null;
-       try {
-            collection = collectionRepository.findById(request.getCollectionID()).orElseThrow();
-        } catch (Exception ex) {
-            collection = null;
-        }
+        Collection  collection = collectionRepository.findById(request.getCollectionID()).orElseThrow();;
+        Category category = categoryRepository.findById(request.getCategoryID()).orElseThrow();
         double priceOfMetal = 0;
         double priceOfDiamond = diamonds.get(0).getPrice();
         if (request.getKarat().equals("24K")) {
@@ -54,13 +50,14 @@ public class ProductLineService {
                 priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
             }
         }
-        Category category = categoryRepository.findById(request.getCategoryID()).orElseThrow();
+
         productLine.setCollection(collection);
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
         productLine.setGender(request.getGender());
         productLine.setPrice(priceOfMetal + priceOfDiamond);
         productLine.setPriceRate(request.getPriceRate());
+        productLine.setFinalPrice(productLine.getPrice() + (productLine.getPrice() * productLine.getPriceRate()) / 100);
         productLine.setMetal(request.getMetal());
         productLine.setKarat(request.getKarat());
         productLine.setWeight(request.getWeight());
@@ -152,7 +149,8 @@ public class ProductLineService {
         List<ProductLine> list = productLineRepository.findAvailableProductLines();
         return list;
     }
-
+    //mircoservice
+//filter => controller => service => repo
     public List<ProductLine> getAllProductLines() {
         return productLineRepository.findAll();
     }
@@ -165,5 +163,9 @@ public class ProductLineService {
 
     public ProductLine getById(long id) {
         return productLineRepository.findById(id).orElseThrow();
+    }
+
+    public List<ProductLine> search(String search) {
+        return productLineRepository.findProductLineByName(search);
     }
 }

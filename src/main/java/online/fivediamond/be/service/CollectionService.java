@@ -24,33 +24,34 @@ public class CollectionService {
 
     public Collection create(CollectionCreationRequest request) {
         Collection  collection = new Collection();
-        List<ProductLine> productLines = productLineRepository.findAllById(request.getProductLineId());
-        Set<ProductLine> productLineSet = new HashSet<>(productLines);
+//        List<ProductLine> productLines = productLineRepository.findAllById(request.getProductLineId());
+//        Set<ProductLine> productLineSet = new HashSet<>(productLines);
         collection.setName(request.getName());
         collection.setDescription(request.getDescription());
         collection.setImgURL(request.getImgURL());
-        collection.setProductLines(productLineSet);
+//        collection.setProductLines(productLineSet);
         collection = collectionRepository.save(collection);
-        for(ProductLine productLine: productLines) {
-            ProductLine productLine1 = productLineRepository.findById(productLine.getId()).orElseThrow(() -> new RuntimeException("Not found"));
-            productLine1.setCollection(collection);
-            productLineRepository.save(productLine1);
-        }
+//        for(ProductLine productLine: productLines) {
+//            ProductLine productLine1 = productLineRepository.findById(productLine.getId()).orElseThrow(() -> new RuntimeException("Not found"));
+//            productLine1.setCollection(collection);
+//            productLineRepository.save(productLine1);
+//        }
         return collection;
     }
 
     public Collection update(long id, CollectionUpdateRequest request) {
         Collection collection = collectionRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-        List<ProductLine> productLines = productLineRepository.findAllById(request.getProductLineId());
-        Set<ProductLine> productLineSet = new HashSet<>(productLines);
         collection.setName(request.getName());
         collection.setDescription(request.getDescription());
         collection.setImgURL(request.getImgURL());
-        collection.setProductLines(productLineSet);
         return collectionRepository.save(collection);
     }
 
     public List<Collection> getAllCollections() {
         return collectionRepository.findAll();
+    }
+
+    public Collection getById(long id) {
+        return collectionRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
 }

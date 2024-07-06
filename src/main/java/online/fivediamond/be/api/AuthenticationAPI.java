@@ -83,8 +83,4 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(authenticationService.update(id, request));
     }
 
-//    @GetMapping("user/{id}")
-//    public ResponseEntity getAccountById(@PathVariable long id) {
-//        return  ResponseEntity.ok(authenticationService.getAccountById(id));
-//    }
 }
