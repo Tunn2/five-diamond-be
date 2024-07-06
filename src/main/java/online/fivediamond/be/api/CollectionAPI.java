@@ -20,12 +20,17 @@ public class CollectionAPI {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable long id, CollectionUpdateRequest request) {
+    public ResponseEntity update(@PathVariable long id, @RequestBody CollectionUpdateRequest request) {
         return  ResponseEntity.ok(collectionService.update(id, request));
     }
 
     @GetMapping
     public ResponseEntity getAllCollections() {
         return ResponseEntity.ok(collectionService.getAllCollections());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity getById(@PathVariable long id) {
+        return ResponseEntity.ok(collectionService.getById(id));
     }
 }

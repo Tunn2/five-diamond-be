@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,8 @@ public class Account implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
+    LocalDate createAt;
+
     @OneToOne
     @JoinColumn(name = "cart_id")
     Cart cart;
@@ -64,6 +67,10 @@ public class Account implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     Set<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    Set<Warranty> warranties;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

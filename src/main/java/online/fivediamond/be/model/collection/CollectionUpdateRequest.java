@@ -9,5 +9,4 @@ public class CollectionUpdateRequest {
     String name;
     String description;
     String imgURL;
-    List<Long> productLineId;
 }

@@ -10,5 +10,4 @@ public class CollectionCreationRequest {
     String name;
     String description;
     String imgURL;
-    List<Long> productLineId;
 }
