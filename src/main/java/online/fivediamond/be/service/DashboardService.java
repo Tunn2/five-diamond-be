@@ -7,16 +7,22 @@ import online.fivediamond.be.entity.Product;
 import online.fivediamond.be.entity.ProductLine;
 import online.fivediamond.be.enums.Role;
 import online.fivediamond.be.model.dto.AccountTotalResponse;
+//import online.fivediamond.be.model.dto.BestSellerProductLine;
+import online.fivediamond.be.model.dto.BestSeller;
+import online.fivediamond.be.model.dto.MostSellerResponse;
 import online.fivediamond.be.model.dto.RevenueTotalResponse;
 import online.fivediamond.be.repository.AuthenticationRepository;
+//import online.fivediamond.be.repository.BestSellerRepository;
 import online.fivediamond.be.repository.OrderRepository;
 import online.fivediamond.be.repository.ProductLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class DashboardService {
@@ -26,6 +32,12 @@ public class DashboardService {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    ProductLineRepository productLineRepository;
+
+//    @Autowired
+//    BestSellerRepository bestSellerRepository;
 
     public AccountTotalResponse countUser() {
         int customerCount = authenticationRepository.countByRole(Role.CUSTOMER.toString());
@@ -93,6 +105,21 @@ public class DashboardService {
 
         return list;
     }
+
+//    @Transactional(readOnly = true)
+    public List<MostSellerResponse> getMostSellerByMonth(int year) {
+        List<MostSellerResponse> list = new ArrayList<>();
+        for(int i = 1; i <= 12; i++) {
+            List<Object[]> productLines = productLineRepository.getBestSellersByMonthAndYear(i, year);
+            List<BestSeller> bestSellers = productLines.stream()
+                    .map(result -> new BestSeller((Long) result[0], ((Number) result[1]).longValue()))
+                    .collect(Collectors.toList());
+            System.out.println(productLines);
+            list.add(new MostSellerResponse(i, bestSellers));
+        }
+        return list;
+    }
+
 
 //    public List<ProfitResponseDTO> getProfitByMonth(int year) {
 //        int i;
