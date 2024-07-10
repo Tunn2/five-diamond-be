@@ -7,17 +7,14 @@ import online.fivediamond.be.entity.Product;
 import online.fivediamond.be.entity.ProductLine;
 import online.fivediamond.be.enums.Role;
 import online.fivediamond.be.model.dto.AccountTotalResponse;
-//import online.fivediamond.be.model.dto.BestSellerProductLine;
 import online.fivediamond.be.model.dto.BestSeller;
 import online.fivediamond.be.model.dto.MostSellerResponse;
 import online.fivediamond.be.model.dto.RevenueTotalResponse;
 import online.fivediamond.be.repository.AuthenticationRepository;
-//import online.fivediamond.be.repository.BestSellerRepository;
 import online.fivediamond.be.repository.OrderRepository;
 import online.fivediamond.be.repository.ProductLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +32,6 @@ public class DashboardService {
 
     @Autowired
     ProductLineRepository productLineRepository;
-
-//    @Autowired
-//    BestSellerRepository bestSellerRepository;
 
     public AccountTotalResponse countUser() {
         int customerCount = authenticationRepository.countByRole(Role.CUSTOMER.toString());
@@ -115,53 +109,9 @@ public class DashboardService {
                     .map(result -> new BestSeller((Long) result[0], ((Number) result[1]).longValue()))
                     .collect(Collectors.toList());
             System.out.println(productLines);
-            list.add(new MostSellerResponse(i, bestSellers));
+            list.add(new MostSellerResponse(i, bestSellers));   
         }
         return list;
     }
-
-
-//    public List<ProfitResponseDTO> getProfitByMonth(int year) {
-//        int i;
-//        List<ProfitResponseDTO> list =  new ArrayList<>();
-//        float revenuePortal;
-//        List<SystemProfit> systemProfits;
-//        for(i = 1 ; i <= 12 ; i++){
-//            List<ListSystemProfitMapByDTO> listSystemProfitMapByDTOS = new ArrayList<>();
-//            int month = i;
-//            try {
-//                revenuePortal = systemProfitRepository.getProfitByMonth(month, year);
-//                systemProfits = systemProfitRepository.getAllHistorySystemProfit(month ,year);
-//            }catch(Exception e){
-//                revenuePortal = 0;
-//                systemProfits = new ArrayList<>();
-//            }
-//            for(SystemProfit systemProfit :systemProfits){
-//                ListSystemProfitMapByDTO listSystemProfitMapByDTO = new ListSystemProfitMapByDTO();
-//                listSystemProfitMapByDTO.setId(systemProfit.getId());
-//                listSystemProfitMapByDTO.setDescription(systemProfit.getDescription());
-//                listSystemProfitMapByDTO.setBalance(systemProfit.getBalance());
-//                listSystemProfitMapByDTO.setDate(systemProfit.getDate());
-//                if(systemProfit.getTransaction() != null){
-//                    listSystemProfitMapByDTO.setTransaction(systemProfit.getTransaction());
-//                    if(systemProfit.getTransaction().getFrom() != null){
-//                        listSystemProfitMapByDTO.setUserForm(systemProfit.getTransaction().getFrom().getUser());
-//                    }
-//                    if(systemProfit.getTransaction().getTo() != null){
-//                        listSystemProfitMapByDTO.setUserTo(systemProfit.getTransaction().getTo().getUser());
-//                    }
-//                }
-//                listSystemProfitMapByDTOS.add(listSystemProfitMapByDTO);
-//            }
-//            ProfitResponseDTO responseDTO = new ProfitResponseDTO();
-//            responseDTO.setMonth(month);
-//            responseDTO.setRevenuePortal(revenuePortal);
-//            responseDTO.setSystemProfits(listSystemProfitMapByDTOS);
-//            list.add(responseDTO);
-//        }
-//
-//        return list;
-//    }
-
 
 }

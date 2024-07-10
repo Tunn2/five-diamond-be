@@ -1,7 +1,6 @@
 package online.fivediamond.be.api;
 
 import online.fivediamond.be.entity.Diamond;
-import online.fivediamond.be.enums.Origin;
 import online.fivediamond.be.model.diamond.DiamondCreationRequest;
 import online.fivediamond.be.model.diamond.DiamondUpdateRequest;
 import online.fivediamond.be.service.DiamondService;

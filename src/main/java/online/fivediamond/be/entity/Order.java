@@ -31,6 +31,7 @@ public class Order {
     String address;
     double totalAmount;
     Date shippingDate;
+    String imgConfirmUrl;
 
     @ManyToOne
     @JoinColumn(name = "promotion_id")
