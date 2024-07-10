@@ -1,6 +1,5 @@
 package online.fivediamond.be.api;
 
-import online.fivediamond.be.entity.Collection;
 import online.fivediamond.be.model.collection.CollectionCreationRequest;
 import online.fivediamond.be.model.collection.CollectionUpdateRequest;
 import online.fivediamond.be.service.CollectionService;
@@ -33,4 +32,10 @@ public class CollectionAPI {
     public ResponseEntity getById(@PathVariable long id) {
         return ResponseEntity.ok(collectionService.getById(id));
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity delete(@PathVariable long id) {
+        return ResponseEntity.ok(collectionService.delete(id));
+    }
+
 }

@@ -2,12 +2,16 @@ package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.*;
 import online.fivediamond.be.model.productLine.ProductLineCreationRequest;
+import online.fivediamond.be.model.productLine.ProductLineResponse;
 import online.fivediamond.be.model.productLine.ProductLineUpdateRequest;
 import online.fivediamond.be.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProductLineService {
@@ -50,14 +54,14 @@ public class ProductLineService {
                 priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
             }
         }
-
+        double price = priceOfMetal + priceOfDiamond;
         productLine.setCollection(collection);
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
         productLine.setGender(request.getGender());
-        productLine.setPrice(priceOfMetal + priceOfDiamond);
+        productLine.setPrice(price);
         productLine.setPriceRate(request.getPriceRate());
-        productLine.setFinalPrice(productLine.getPrice() + (productLine.getPrice() * productLine.getPriceRate()) / 100);
+        productLine.setFinalPrice(price + ((price * productLine.getPriceRate()) / 100));
         productLine.setMetal(request.getMetal());
         productLine.setKarat(request.getKarat());
         productLine.setWeight(request.getWeight());
@@ -161,8 +165,31 @@ public class ProductLineService {
         return productLineRepository.save(productLine);
     }
 
-    public ProductLine getById(long id) {
-        return productLineRepository.findById(id).orElseThrow();
+    public ProductLineResponse getById(long id) {
+        ProductLineResponse productLineResponse = new ProductLineResponse();
+        ProductLine productLine = productLineRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+
+        List<Long> diamondIds = new ArrayList<>();
+        List<Product> products = productRepository.findByProductLineId(id);
+        for(Product p : products) {
+            diamondIds.add(p.getId());
+        }
+        productLineResponse.setDiamondIds(diamondIds);
+        productLineResponse.setCarat(productLine.getCarat());
+        productLineResponse.setClarity(productLine.getClarity());
+        productLineResponse.setCategory(productLine.getCategory());
+        productLineResponse.setColor(productLine.getColor());
+        productLineResponse.setCut(productLine.getCut());
+        productLineResponse.setDeleted(productLine.isDeleted());
+        productLineResponse.setCollection(productLine.getCollection());
+        productLineResponse.setGender(productLine.getGender());
+        productLineResponse.setPriceRate(productLine.getPriceRate());
+        productLineResponse.setSpecial(productLineResponse.isSpecial());
+        productLineResponse.setTypeOfSub(productLine.getTypeOfSub());
+        productLineResponse.setQuantityOfSub(productLine.getQuantityOfSub());
+//
+//        return productLineResponse;
+        return productLineResponse;
     }
 
     public List<ProductLine> search(String search) {

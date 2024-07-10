@@ -156,7 +156,7 @@ ProductRepository productRepository;
         return order;
     }
 
-    public Order updateOrderStatus(long id, OrderStatusUpdateRequest request, long accountID) {
+    public Order updateOrderStatus(long id, OrderStatusUpdateRequest request, long accountID, String imgConfirmUrl) {
         Order order = orderRepository.findById(id).orElseThrow();
         Account account = authenticationRepository.findById(accountID).orElseThrow(() -> new RuntimeException("Not found"));
         if(account.getRole() == Role.SALES)
@@ -164,6 +164,9 @@ ProductRepository productRepository;
         if(account.getRole() == Role.DELIVERY)
             order.setShipper(account);
         order.setOrderStatus(request.getOrderStatus());
+        if(request.getOrderStatus() == OrderStatus.DELIVERED) {
+            order.setImgConfirmUrl(imgConfirmUrl);
+        }
         return orderRepository.save(order);
     }
 

@@ -19,6 +19,7 @@ public class Collection {
     String description;
     String imgURL;
 
+    boolean isDeleted;
     @JsonIgnore
     @OneToMany(mappedBy = "collection")
     Set<ProductLine> productLines;

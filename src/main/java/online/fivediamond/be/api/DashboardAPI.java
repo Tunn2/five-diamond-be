@@ -36,4 +36,9 @@ public class DashboardAPI {
     public ResponseEntity getAccountByMonth() {
         return ResponseEntity.ok(dashboardService.getAccountByMonth(Year.now().getValue()));
     }
+
+    @GetMapping("best-seller")
+    public ResponseEntity getBestSellerByMonth() {
+        return ResponseEntity.ok(dashboardService.getMostSellerByMonth(Year.now().getValue()));
+    }
 }

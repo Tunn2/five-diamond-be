@@ -2,12 +2,10 @@ package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.Certificate;
 import online.fivediamond.be.entity.Diamond;
-import online.fivediamond.be.enums.Origin;
 import online.fivediamond.be.model.diamond.DiamondCreationRequest;
 import online.fivediamond.be.model.diamond.DiamondUpdateRequest;
 import online.fivediamond.be.repository.CertificateRepository;
 import online.fivediamond.be.repository.DiamondRepository;
-import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
