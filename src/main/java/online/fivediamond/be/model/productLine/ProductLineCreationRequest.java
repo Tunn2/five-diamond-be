@@ -23,7 +23,6 @@ public class ProductLineCreationRequest {
     boolean isSpecial;
     long categoryID;
     List<Long> diamondID;
-    long collectionID;
     String shape;
     String cut;
     String color;

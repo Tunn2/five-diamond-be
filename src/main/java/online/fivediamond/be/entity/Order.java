@@ -1,11 +1,7 @@
 package online.fivediamond.be.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.fivediamond.be.enums.OrderStatus;
 
@@ -17,7 +13,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "orders")
-
 public class Order {
 
     @Id
@@ -32,6 +27,11 @@ public class Order {
     double totalAmount;
     Date shippingDate;
     String imgConfirmUrl;
+
+    int cannotContactTimes;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    CanceledOrder canceledOrder;
 
     @ManyToOne
     @JoinColumn(name = "promotion_id")

@@ -1,6 +1,5 @@
 package online.fivediamond.be.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,11 @@ public class Collection {
     String imgURL;
 
     boolean isDeleted;
-    @JsonIgnore
-    @OneToMany(mappedBy = "collection")
+
+    @ManyToMany
+    @JoinTable(
+            name = "collection_productline",
+            joinColumns = @JoinColumn(name = "collection_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_line_id"))
     Set<ProductLine> productLines;
 }

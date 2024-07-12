@@ -2,9 +2,7 @@ package online.fivediamond.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.entity.Order;
-import online.fivediamond.be.model.order.OrderCreationRequest;
-import online.fivediamond.be.model.order.OrderResponse;
-import online.fivediamond.be.model.order.OrderStatusUpdateRequest;
+import online.fivediamond.be.model.order.*;
 import online.fivediamond.be.service.OrderService;
 import online.fivediamond.be.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +67,32 @@ public class OrderAPI {
     }
 
     @PutMapping("{id}&{accountID}")
-    public ResponseEntity updateOrderStatus(@PathVariable long id, @RequestBody OrderStatusUpdateRequest request, @PathVariable long accountID, @RequestParam String imgConfirmUrl) {
-        return ResponseEntity.ok(orderService.updateOrderStatus(id, request, accountID, imgConfirmUrl));
+    public ResponseEntity updateOrderStatus(@PathVariable long id, @RequestBody OrderStatusUpdateRequest request, @PathVariable long accountID) {
+        return ResponseEntity.ok(orderService.updateOrderStatus(id, request, accountID));
     }
 
+    @PutMapping("cancel/{id}")
+    public ResponseEntity cancelOrder(@PathVariable long id, @RequestBody OrderCancelRequest request) {
+        return ResponseEntity.ok(orderService.cancelOrder(id, request));
+    }
+
+    @PutMapping("confirm/{id}")
+    public ResponseEntity confirmOrder(@PathVariable long id, @RequestBody OrderDeliveryRequest request) {
+        return ResponseEntity.ok(orderService.deliveredOrder(id, request));
+    }
+
+    @PutMapping("refund/{id}")
+    public ResponseEntity refund(@PathVariable long id) {
+        return ResponseEntity.ok(orderService.refund(id));
+    }
+
+    @GetMapping("canceled")
+    public ResponseEntity getListCanceledOrder() {
+        return ResponseEntity.ok(orderService.getListCanceledOrder());
+    }
+
+    @PostMapping("cannot-contact/{id}")
+    public ResponseEntity cannotContact(@PathVariable long id, @RequestBody OrderCancelRequest request) {
+        return ResponseEntity.ok(orderService.cannotContact(id, request));
+    }
 }

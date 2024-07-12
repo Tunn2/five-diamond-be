@@ -1,6 +1,6 @@
 package online.fivediamond.be.api;
 
-import online.fivediamond.be.model.RechargeRequestDTO;
+import online.fivediamond.be.model.dto.RechargeRequestDTO;
 import online.fivediamond.be.service.CartService;
 import online.fivediamond.be.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;

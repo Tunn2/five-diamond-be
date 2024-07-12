@@ -38,4 +38,9 @@ public class CollectionAPI {
         return ResponseEntity.ok(collectionService.delete(id));
     }
 
+    @GetMapping("available")
+    public ResponseEntity getAvailableCollections() {
+        return ResponseEntity.ok(collectionService.getAvailableCollections());
+    }
+
 }
