@@ -1,5 +1,6 @@
 package online.fivediamond.be.repository;
 
+import online.fivediamond.be.entity.Collection;
 import online.fivediamond.be.entity.Order;
 import online.fivediamond.be.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "SELECT * FROM orders WHERE MONTH(order_date) = :month AND YEAR(order_date) = :year", nativeQuery = true)
     List<Order> findOrderByOrderDate(@Param("month") int month, @Param("year") int year);
+
+
 
 }

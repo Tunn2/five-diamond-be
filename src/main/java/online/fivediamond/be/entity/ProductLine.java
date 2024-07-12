@@ -45,9 +45,9 @@ public class ProductLine {
     double size;
     Origin origin;
 
-    @ManyToOne
-    @JoinColumn(name = "collection_id")
-    Collection collection;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "productLines")
+    Set<Collection> collections;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

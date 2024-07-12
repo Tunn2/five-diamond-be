@@ -2,7 +2,6 @@ package online.fivediamond.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.entity.Account;
-import online.fivediamond.be.model.*;
 import online.fivediamond.be.model.account.*;
 import online.fivediamond.be.service.AuthenticationService;
 import online.fivediamond.be.service.EmailService;

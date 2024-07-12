@@ -1,9 +1,7 @@
 package online.fivediamond.be.service;
 
 //import online.fivediamond.be.entity.Transaction;
-import online.fivediamond.be.entity.Account;
-import online.fivediamond.be.entity.Cart;
-import online.fivediamond.be.model.RechargeRequestDTO;
+import online.fivediamond.be.model.dto.RechargeRequestDTO;
 //import online.fivediamond.be.repository.TransactionRepository;
 import online.fivediamond.be.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,19 +38,10 @@ public class WalletService {
         String orderId = UUID.randomUUID().toString().substring(0,6);
 
 
-////
-//        Transaction transaction = new Transaction();
-//        transaction.setAmount(Float.parseFloat(rechargeRequestDTO.getAmount()));
-//        transaction.setTransactionType(TransactionType.PENDING);
-//
-//        transaction.setTransactionDate(formattedCreateDate);
-////        transaction.setDescription("Recharge");
-//        Transaction transactionReturn = transactionRepository.save(transaction);
-
         String tmnCode = "GFERR5TJ";
         String secretKey = "5X14AYMF2OJRU9LDVIRS76HBLAAV71XD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://fivediamond.online/thanh-toan-thanh-cong";
+        String returnUrl = "http://178.128.96.22/thanh-toan-thanh-cong";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -68,7 +57,7 @@ public class WalletService {
 
         vnpParams.put("vnp_ReturnUrl", returnUrl);
         vnpParams.put("vnp_CreateDate", formattedCreateDate);
-        vnpParams.put("vnp_IpAddr", "157.245.145.162");
+        vnpParams.put("vnp_IpAddr", "178.128.96.22");
 
         StringBuilder signDataBuilder = new StringBuilder();
         for (Map.Entry<String, String> entry : vnpParams.entrySet()) {

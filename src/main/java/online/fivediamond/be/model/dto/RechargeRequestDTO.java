@@ -1,8 +1,6 @@
-package online.fivediamond.be.model;
+package online.fivediamond.be.model.dto;
 
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class RechargeRequestDTO {

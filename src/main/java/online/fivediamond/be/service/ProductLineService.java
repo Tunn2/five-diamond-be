@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ProductLineService {
@@ -37,7 +35,7 @@ public class ProductLineService {
     public ProductLine create(ProductLineCreationRequest request) {
         ProductLine productLine = new ProductLine();
         List<Diamond> diamonds = diamondRepository.findAllById(request.getDiamondID());
-        Collection  collection = collectionRepository.findById(request.getCollectionID()).orElseThrow();;
+//        Collection  collection = collectionRepository.findById(request.getCollectionID()).orElseThrow();;
         Category category = categoryRepository.findById(request.getCategoryID()).orElseThrow();
         double priceOfMetal = 0;
         double priceOfDiamond = diamonds.get(0).getPrice();
@@ -55,7 +53,6 @@ public class ProductLineService {
             }
         }
         double price = priceOfMetal + priceOfDiamond;
-        productLine.setCollection(collection);
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
         productLine.setGender(request.getGender());
@@ -111,6 +108,7 @@ public class ProductLineService {
                 priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
             }
         }
+
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
         productLine.setGender(request.getGender());
@@ -168,12 +166,15 @@ public class ProductLineService {
     public ProductLineResponse getById(long id) {
         ProductLineResponse productLineResponse = new ProductLineResponse();
         ProductLine productLine = productLineRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-
         List<Long> diamondIds = new ArrayList<>();
         List<Product> products = productRepository.findByProductLineId(id);
+        List<Collection> collections = collectionRepository.getCollectionByProductLineId(id);
         for(Product p : products) {
             diamondIds.add(p.getId());
         }
+        productLineResponse.setCollectionList(collections);
+        productLineResponse.setQuantity(productLine.getQuantity());
+        productLineResponse.setId(productLine.getId());
         productLineResponse.setDiamondIds(diamondIds);
         productLineResponse.setCarat(productLine.getCarat());
         productLineResponse.setClarity(productLine.getClarity());
@@ -181,14 +182,22 @@ public class ProductLineService {
         productLineResponse.setColor(productLine.getColor());
         productLineResponse.setCut(productLine.getCut());
         productLineResponse.setDeleted(productLine.isDeleted());
-        productLineResponse.setCollection(productLine.getCollection());
         productLineResponse.setGender(productLine.getGender());
         productLineResponse.setPriceRate(productLine.getPriceRate());
-        productLineResponse.setSpecial(productLineResponse.isSpecial());
+        productLineResponse.setSpecial(productLine.isSpecial());
         productLineResponse.setTypeOfSub(productLine.getTypeOfSub());
         productLineResponse.setQuantityOfSub(productLine.getQuantityOfSub());
-//
-//        return productLineResponse;
+        productLineResponse.setPriceRate(productLine.getPriceRate());
+        productLineResponse.setFinalPrice(productLine.getFinalPrice());
+        productLineResponse.setPrice(productLine.getPrice());
+        productLineResponse.setWeight(productLine.getWeight());
+        productLineResponse.setOrigin(productLine.getOrigin());
+        productLineResponse.setName(productLine.getName());
+        productLineResponse.setDescription(productLine.getDescription());
+        productLineResponse.setImgURL(productLine.getImgURL());
+        productLineResponse.setMetal(productLine.getMetal());
+        productLineResponse.setKarat(productLine.getKarat());
+        productLineResponse.setShape(productLine.getShape());
         return productLineResponse;
     }
 

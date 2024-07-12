@@ -1,11 +1,10 @@
 package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.*;
+import online.fivediamond.be.enums.CancelOrderStatus;
 import online.fivediamond.be.enums.OrderStatus;
 import online.fivediamond.be.enums.Role;
-import online.fivediamond.be.model.order.OrderCreationRequest;
-import online.fivediamond.be.model.order.OrderResponse;
-import online.fivediamond.be.model.order.OrderStatusUpdateRequest;
+import online.fivediamond.be.model.order.*;
 import online.fivediamond.be.repository.*;
 import online.fivediamond.be.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -50,6 +46,9 @@ ProductRepository productRepository;
 
     @Autowired
     WarrantyRepository warrantyRepository;
+
+    @Autowired
+    CancelOrderRepository cancelOrderRepository;
 
     @Transactional
     public Order convertCartToOrder(OrderCreationRequest request) {
@@ -96,7 +95,7 @@ ProductRepository productRepository;
             productLineRepository.save(productLine);
             cartItemRepository.deleteCartItem(item.getId());
         }
-//        price = price - price * (promotion.getDiscountPercentage() / 100);
+        order.setCannotContactTimes(0);
         order.setPromotion(promotion);
         Set<OrderItem> orderItemSet = new HashSet<>(orderItems);
         order.setOrderItems(orderItemSet);
@@ -108,6 +107,7 @@ ProductRepository productRepository;
         order.setFullname(request.getFullname());
         order.setOrderStatus(request.getOrderStatus());
         order.setNote(request.getNote());
+        order.setCannotContactTimes(0);
         account.setRewardPoint(account.getRewardPoint() + request.getTotalAmount());
         authenticationRepository.save(account);
         order = orderRepository.save(order); // Save the order again to ensure it contains all order items
@@ -156,7 +156,7 @@ ProductRepository productRepository;
         return order;
     }
 
-    public Order updateOrderStatus(long id, OrderStatusUpdateRequest request, long accountID, String imgConfirmUrl) {
+    public Order updateOrderStatus(long id, OrderStatusUpdateRequest request, long accountID) {
         Order order = orderRepository.findById(id).orElseThrow();
         Account account = authenticationRepository.findById(accountID).orElseThrow(() -> new RuntimeException("Not found"));
         if(account.getRole() == Role.SALES)
@@ -164,12 +164,50 @@ ProductRepository productRepository;
         if(account.getRole() == Role.DELIVERY)
             order.setShipper(account);
         order.setOrderStatus(request.getOrderStatus());
-        if(request.getOrderStatus() == OrderStatus.DELIVERED) {
-            order.setImgConfirmUrl(imgConfirmUrl);
+        return orderRepository.save(order);
+    }
+
+    public Order cancelOrder(long id, OrderCancelRequest request) {
+        Order order = orderRepository.findById(id).orElseThrow();
+        CanceledOrder canceledOrder = new CanceledOrder();
+        order.setOrderStatus(OrderStatus.CANCELED);
+
+        canceledOrder.setCancelOrderStatus(CancelOrderStatus.PENDING);
+        canceledOrder.setRefundAmount(order.getTotalAmount());
+        canceledOrder.setAccount(order.getCustomer());
+        canceledOrder.setReason(request.getCanceledNote());
+        canceledOrder.setCancelDate(LocalDate.now());
+        canceledOrder.setOrder(order);
+
+        cancelOrderRepository.save(canceledOrder);
+        return orderRepository.save(order);
+    }
+
+    public Order deliveredOrder(long id, OrderDeliveryRequest request) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        order.setShippingDate(new Date());
+        order.setImgConfirmUrl(request.getImgConfirmUrl());
+        return orderRepository.save(order);
+    }
+
+    public List<CanceledOrder> getListCanceledOrder() {
+        return cancelOrderRepository.findAll();
+    }
+
+    public Order cannotContact(long id, OrderCancelRequest request) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        if(order.getCannotContactTimes() == 3) {
+            cancelOrder(id, request);
+        }else {
+            order.setCannotContactTimes(order.getCannotContactTimes() + 1);
         }
         return orderRepository.save(order);
     }
 
-    
+    public CanceledOrder refund(long id) {
+        CanceledOrder canceledOrder = cancelOrderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        canceledOrder.setCancelOrderStatus(CancelOrderStatus.FINISHED);
+        return cancelOrderRepository.save(canceledOrder);
+    }
 
 }
