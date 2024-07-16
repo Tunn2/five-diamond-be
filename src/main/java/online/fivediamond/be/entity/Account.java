@@ -60,6 +60,7 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "staff")
     Set<Order> ordersStaff;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     Set<CanceledOrder> canceledOrders;
 

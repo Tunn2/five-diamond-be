@@ -19,10 +19,12 @@ public class Warranty {
     @JoinColumn(name = "account_id")
     Account account;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     Product product;
 
     LocalDate orderDate;
     LocalDate expiredDate;
+
+    boolean isDelete;
 }

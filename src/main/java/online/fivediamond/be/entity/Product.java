@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -34,6 +36,6 @@ public class Product {
     OrderItem orderItem;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
-    Warranty warranty;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    Set<Warranty> warranties;
 }

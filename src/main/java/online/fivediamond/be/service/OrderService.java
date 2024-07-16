@@ -55,7 +55,6 @@ ProductRepository productRepository;
         Account account = accountUtil.accountCurrent();
         Cart cart = cartRepository.findById(account.getCart().getId()).orElseThrow();
         Set<CartItem> cartItems = cart.getCartItems();
-//        double price = 0;
         List<OrderItem> orderItems = new ArrayList<>();
         if (cartItems.isEmpty()) {
             throw new RuntimeException("Cart is empty");
@@ -171,6 +170,14 @@ ProductRepository productRepository;
         Order order = orderRepository.findById(id).orElseThrow();
         CanceledOrder canceledOrder = new CanceledOrder();
         order.setOrderStatus(OrderStatus.CANCELED);
+        Set<OrderItem> orderItems = order.getOrderItems();
+        for(OrderItem item: orderItems) {
+            Product product = item.getProduct();
+            product.setSale(false);
+            Set<Warranty> warranties = product.getWarranties();
+            List<Warranty> warrantyList = new ArrayList<>(warranties);
+            warrantyList.get(warrantyList.size() - 1).setDelete(true);
+        }
 
         canceledOrder.setCancelOrderStatus(CancelOrderStatus.PENDING);
         canceledOrder.setRefundAmount(order.getTotalAmount());
