@@ -1,5 +1,6 @@
 package online.fivediamond.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class Order {
 
     int cannotContactTimes;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     CanceledOrder canceledOrder;
 
@@ -42,6 +44,7 @@ public class Order {
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     Set<OrderItem> orderItems;
+
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

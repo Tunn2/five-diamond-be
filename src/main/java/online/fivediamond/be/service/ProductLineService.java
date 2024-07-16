@@ -13,10 +13,7 @@ import java.util.List;
 
 @Service
 public class ProductLineService {
-    final double GOLD_24K = 7600000;
-    final double GOLD_18K = GOLD_24K * 0.75;
-    final double SUB_DIAMOND = 500000;
-    final double SUB_MOISSANITE = 250000;
+
     @Autowired
     ProductLineRepository productLineRepository;
 
@@ -32,26 +29,33 @@ public class ProductLineService {
     @Autowired
     CollectionRepository collectionRepository;
 
+    @Autowired
+    GoldRepository goldRepository;
+
+    @Autowired
+    SubRepository subRepository;
+
     public ProductLine create(ProductLineCreationRequest request) {
         ProductLine productLine = new ProductLine();
         List<Diamond> diamonds = diamondRepository.findAllById(request.getDiamondID());
-//        Collection  collection = collectionRepository.findById(request.getCollectionID()).orElseThrow();;
         Category category = categoryRepository.findById(request.getCategoryID()).orElseThrow();
-        double priceOfMetal = 0;
-        double priceOfDiamond = diamonds.get(0).getPrice();
+        Gold gold = null;
+        Sub sub = null;
         if (request.getKarat().equals("24K")) {
-            if (request.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_24K * request.getWeight() + request.getQuantityOfSub() * SUB_DIAMOND;
-            } else if (request.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_24K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
-            }
+            gold = goldRepository.findByGoldEnum("GOLD_24K");
         } else if (request.getKarat().equals("18K")) {
-            if (request.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_DIAMOND;
-            } else if (productLine.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
-            }
+            gold = goldRepository.findByGoldEnum("GOLD_18K");
         }
+
+        if(request.getTypeOfSub().toString().equals("DIAMOND")) {
+            sub = subRepository.findByTypeOfSub("DIAMOND");
+        } else if(request.getTypeOfSub().toString().equals("MOISSANITE")) {
+            sub = subRepository.findByTypeOfSub("MOISSANITE");
+        }
+
+        double priceOfMetal = (gold.getPricePerTael() * request.getWeight()) + (sub.getPrice() * request.getQuantityOfSub());
+        double priceOfDiamond = diamonds.get(0).getPrice();
+
         double price = priceOfMetal + priceOfDiamond;
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
@@ -66,7 +70,6 @@ public class ProductLineService {
         productLine.setImgURL(request.getImgURL());
         productLine.setTypeOfSub(request.getTypeOfSub());
         productLine.setQuantityOfSub(request.getQuantityOfSub());
-        productLine.setQuantity(diamonds.size());
         productLine.setSpecial(request.isSpecial());
         productLine.setShape(request.getShape());
         productLine.setCut(request.getCut());
@@ -90,24 +93,24 @@ public class ProductLineService {
         ProductLine productLine = productLineRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         List<Diamond> diamonds = diamondRepository.findAllById(request.getDiamondID());
         List<Product> products = productRepository.findByProductLineId(id);
+        Gold gold = null;
+        Sub sub = null;
+        if (request.getKarat().equals("24K")) {
+            gold = goldRepository.findByGoldEnum("GOLD_24K");
+        } else if (request.getKarat().equals("18K")) {
+            gold = goldRepository.findByGoldEnum("GOLD_18K");
+        }
+
+        if(request.getTypeOfSub().toString().equals("DIAMOND")) {
+            sub = subRepository.findByTypeOfSub("DIAMOND");
+        } else if(request.getTypeOfSub().toString().equals("MOISSANITE")) {
+            sub = subRepository.findByTypeOfSub("MOISSANITE");
+        }
         for(Product product: products) {
             productRepository.deleteById(product.getId());
         }
-        double priceOfMetal = 0;
+        double priceOfMetal = (gold.getPricePerTael() * request.getWeight()) + (sub.getPrice() * request.getQuantityOfSub());
         double priceOfDiamond = diamonds.get(0).getPrice();
-        if(request.getKarat().equals("24K")) {
-            if(request.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_24K * request.getWeight() + request.getQuantityOfSub() * SUB_DIAMOND;
-            } else if (request.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_24K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
-            }
-        } else if (request.getKarat().equals("18K")) {
-            if(request.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_DIAMOND;
-            } else if (productLine.getTypeOfSub().toString().equals("DIAMOND")) {
-                priceOfMetal = GOLD_18K * request.getWeight() + request.getQuantityOfSub() * SUB_MOISSANITE;
-            }
-        }
 
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
