@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import online.fivediamond.be.enums.Gender;
+import online.fivediamond.be.enums.RankingMember;
 import online.fivediamond.be.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,6 +39,9 @@ public class Account implements UserDetails {
     String address;
     @Enumerated(EnumType.STRING)
     Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    RankingMember rankingMember;
 
     @Enumerated(EnumType.STRING)
     Role role;

@@ -5,6 +5,7 @@ import online.fivediamond.be.entity.Order;
 import online.fivediamond.be.entity.OrderItem;
 import online.fivediamond.be.entity.Product;
 import online.fivediamond.be.entity.ProductLine;
+import online.fivediamond.be.enums.OrderStatus;
 import online.fivediamond.be.enums.Role;
 import online.fivediamond.be.model.dto.AccountTotalResponse;
 import online.fivediamond.be.model.dto.BestSeller;
@@ -83,13 +84,15 @@ public class DashboardService {
             double totalProfitByMonth = 0;
             if(!orderList.isEmpty()) {
                 for (Order order: orderList) {
-                    Set<OrderItem> orderItems = order.getOrderItems();
-                    for(OrderItem orderItem : orderItems) {
-                        Product product = orderItem.getProduct();
-                        ProductLine productLine = product.getProductLine();
-                        totalCost += productLine.getPrice();
+                    if(order.getOrderStatus() != OrderStatus.CANCELED) {
+                        Set<OrderItem> orderItems = order.getOrderItems();
+                        for(OrderItem orderItem : orderItems) {
+                            Product product = orderItem.getProduct();
+                            ProductLine productLine = product.getProductLine();
+                            totalCost += productLine.getPrice();
+                        }
+                        totalRevenueByMonth += order.getTotalAmount();
                     }
-                    totalRevenueByMonth += order.getTotalAmount();
                 }
             }
             totalProfitByMonth = totalRevenueByMonth - totalCost;

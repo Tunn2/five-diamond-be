@@ -42,6 +42,8 @@ public class WalletService {
         String secretKey = "5X14AYMF2OJRU9LDVIRS76HBLAAV71XD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         String returnUrl = "http://fivediamond.shop/thanh-toan-thanh-cong";
+//        String returnUrl = "http://localhost:5173/thanh-toan-thanh-cong";
+
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();

@@ -1,5 +1,6 @@
 package online.fivediamond.be.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.model.sub.SubCreationRequest;
 import online.fivediamond.be.model.sub.SubUpdateRequest;
 import online.fivediamond.be.service.SubService;
@@ -10,13 +11,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/sub")
 @CrossOrigin("*")
+@SecurityRequirement(name = "api")
 public class SubAPI {
 
     @Autowired
     SubService subService;
 
     @PostMapping
-    public ResponseEntity create(SubCreationRequest request) {
+    public ResponseEntity create(@RequestBody SubCreationRequest request) {
         return ResponseEntity.ok(subService.create(request));
     }
 
@@ -31,7 +33,7 @@ public class SubAPI {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable long id, SubUpdateRequest request) {
+    public ResponseEntity update(@PathVariable long id,@RequestBody SubUpdateRequest request) {
         return ResponseEntity.ok(subService.update(id, request));
     }
 

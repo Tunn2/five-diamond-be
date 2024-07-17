@@ -1,5 +1,6 @@
 package online.fivediamond.be.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.model.gold.GoldCreationRequest;
 import online.fivediamond.be.model.gold.GoldUpdateRequest;
 import online.fivediamond.be.service.GoldService;
@@ -10,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/gold")
 @CrossOrigin("*")
-
+@SecurityRequirement(name = "api")
 public class GoldAPI {
 
     @Autowired
     GoldService goldService;
 
     @PostMapping
-    public ResponseEntity create(GoldCreationRequest request) {
+    public ResponseEntity create(@RequestBody GoldCreationRequest request) {
         return ResponseEntity.ok(goldService.create(request));
     }
 
@@ -32,7 +33,7 @@ public class GoldAPI {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity update(@PathVariable long id, GoldUpdateRequest request) {
+    public ResponseEntity update(@PathVariable long id,@RequestBody GoldUpdateRequest request) {
         return ResponseEntity.ok(goldService.update(id, request));
     }
 
