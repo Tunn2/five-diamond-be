@@ -7,10 +7,12 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Five Diamond API", version = "2.0", description = "meo meo"))
 @SecurityScheme(name = "api", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+@EnableScheduling
 public class BeApplication {
 
 	public static void main(String[] args) {

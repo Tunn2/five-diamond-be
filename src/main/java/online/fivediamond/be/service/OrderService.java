@@ -3,11 +3,13 @@ package online.fivediamond.be.service;
 import online.fivediamond.be.entity.*;
 import online.fivediamond.be.enums.CancelOrderStatus;
 import online.fivediamond.be.enums.OrderStatus;
+import online.fivediamond.be.enums.RankingMember;
 import online.fivediamond.be.enums.Role;
 import online.fivediamond.be.model.order.*;
 import online.fivediamond.be.repository.*;
 import online.fivediamond.be.util.AccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +19,15 @@ import java.util.*;
 
 @Service
 public class OrderService {
-@Autowired
+    private final double SILVER = 50000000;
+    private final double GOLD = 100000000;
+    private final double PLATINUM = 200000000;
+
+    @Autowired
     ProductLineRepository productLineRepository;
 
-@Autowired
-ProductRepository productRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     @Autowired
     CartRepository cartRepository;
@@ -72,16 +78,15 @@ ProductRepository productRepository;
 //                orderRepository.deleteById(order.getId());
 //                throw new RuntimeException("Quantity of " + item.getProductLine().getName() + " in stock is not enough");
 //            }
-            int count = 0;
+
             for (Product product : products) {
-                count++;
                 OrderItem orderItem = new OrderItem();
                 Warranty warranty = new Warranty();
                 warranty.setAccount(account);
                 warranty.setOrderDate(LocalDate.now());
                 warranty.setExpiredDate(LocalDate.now().plusYears(2));
                 warranty.setProduct(product);
-                orderItem.setPrice(productLine.getPrice());
+                orderItem.setPrice(productLine.getFinalPrice());
                 orderItem.setProduct(product);
                 orderItem.setOrder(order);
                 product.setSale(true);
@@ -90,7 +95,6 @@ ProductRepository productRepository;
                 orderItemRepository.save(orderItem);
                 orderItems.add(orderItem);
             }
-            productLine.setQuantity(productLine.getQuantity() - count);
             productLineRepository.save(productLine);
             cartItemRepository.deleteCartItem(item.getId());
         }
@@ -108,6 +112,18 @@ ProductRepository productRepository;
         order.setNote(request.getNote());
         order.setCannotContactTimes(0);
         account.setRewardPoint(account.getRewardPoint() + request.getTotalAmount());
+
+        if(account.getRankingMember().equals(RankingMember.PLATINUM)) {
+
+        } else if(account.getRewardPoint() < SILVER) {
+
+        } else if(account.getRewardPoint() >= SILVER && account.getRewardPoint() < GOLD) {
+            account.setRankingMember(RankingMember.SILVER);
+        } else if (account.getRewardPoint() >= GOLD && account.getRewardPoint() < PLATINUM) {
+            account.setRankingMember(RankingMember.GOLD);
+        } else if (account.getRewardPoint() >= PLATINUM) {
+            account.setRankingMember(RankingMember.PLATINUM);
+        }
         authenticationRepository.save(account);
         order = orderRepository.save(order); // Save the order again to ensure it contains all order items
         return order;
@@ -158,11 +174,17 @@ ProductRepository productRepository;
     public Order updateOrderStatus(long id, OrderStatusUpdateRequest request, long accountID) {
         Order order = orderRepository.findById(id).orElseThrow();
         Account account = authenticationRepository.findById(accountID).orElseThrow(() -> new RuntimeException("Not found"));
+
         if(account.getRole() == Role.SALES)
             order.setStaff(account);
         if(account.getRole() == Role.DELIVERY)
             order.setShipper(account);
         order.setOrderStatus(request.getOrderStatus());
+        if (request.getOrderStatus() == OrderStatus.CONFIRMED)
+            order.setConfirmDate(new Date());
+        else if (request.getOrderStatus() == OrderStatus.SHIPPED)
+            order.setShippingDate(new Date());
+
         return orderRepository.save(order);
     }
 
@@ -185,14 +207,16 @@ ProductRepository productRepository;
         canceledOrder.setReason(request.getCanceledNote());
         canceledOrder.setCancelDate(LocalDate.now());
         canceledOrder.setOrder(order);
-
+        Account account = order.getCustomer();
+        account.setRewardPoint(account.getRewardPoint() - order.getTotalAmount());
+        authenticationRepository.save(account);
         cancelOrderRepository.save(canceledOrder);
         return orderRepository.save(order);
     }
 
     public Order deliveredOrder(long id, OrderDeliveryRequest request) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-        order.setShippingDate(new Date());
+        order.setDeliveryDate(new Date());
         order.setImgConfirmUrl(request.getImgConfirmUrl());
         return orderRepository.save(order);
     }
@@ -203,10 +227,17 @@ ProductRepository productRepository;
 
     public Order cannotContact(long id, OrderCancelRequest request) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        order.setCannotContactTimes(order.getCannotContactTimes() + 1);
         if(order.getCannotContactTimes() == 3) {
-            cancelOrder(id, request);
-        }else {
-            order.setCannotContactTimes(order.getCannotContactTimes() + 1);
+            OrderCancelRequest orderCancelRequest = new OrderCancelRequest();
+            orderCancelRequest.setCanceledNote(request.getCanceledNote());
+            cancelOrder(id, orderCancelRequest);
+        } else {
+            if(order.getCannotContactTimes() == 1) {
+                order.setReasonOne(request.getCanceledNote());
+            } else {
+                order.setReasonTwo(request.getCanceledNote());
+            }
         }
         return orderRepository.save(order);
     }

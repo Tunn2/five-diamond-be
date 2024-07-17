@@ -1,6 +1,8 @@
 package online.fivediamond.be.service;
 
 import online.fivediamond.be.entity.*;
+import online.fivediamond.be.enums.GoldEnum;
+import online.fivediamond.be.enums.TypeOfSub;
 import online.fivediamond.be.model.productLine.ProductLineCreationRequest;
 import online.fivediamond.be.model.productLine.ProductLineResponse;
 import online.fivediamond.be.model.productLine.ProductLineUpdateRequest;
@@ -42,15 +44,15 @@ public class ProductLineService {
         Gold gold = null;
         Sub sub = null;
         if (request.getKarat().equals("24K")) {
-            gold = goldRepository.findByGoldEnum("GOLD_24K");
+            gold = goldRepository.findByGoldEnum(GoldEnum.GOLD_24K);
         } else if (request.getKarat().equals("18K")) {
-            gold = goldRepository.findByGoldEnum("GOLD_18K");
+            gold = goldRepository.findByGoldEnum(GoldEnum.GOLD_18K);
         }
 
         if(request.getTypeOfSub().toString().equals("DIAMOND")) {
-            sub = subRepository.findByTypeOfSub("DIAMOND");
+            sub = subRepository.findByTypeOfSub(TypeOfSub.DIAMOND);
         } else if(request.getTypeOfSub().toString().equals("MOISSANITE")) {
-            sub = subRepository.findByTypeOfSub("MOISSANITE");
+            sub = subRepository.findByTypeOfSub(TypeOfSub.MOISSANITE);
         }
 
         double priceOfMetal = (gold.getPricePerTael() * request.getWeight()) + (sub.getPrice() * request.getQuantityOfSub());
@@ -96,15 +98,15 @@ public class ProductLineService {
         Gold gold = null;
         Sub sub = null;
         if (request.getKarat().equals("24K")) {
-            gold = goldRepository.findByGoldEnum("GOLD_24K");
+            gold = goldRepository.findByGoldEnum(GoldEnum.GOLD_24K);
         } else if (request.getKarat().equals("18K")) {
-            gold = goldRepository.findByGoldEnum("GOLD_18K");
+            gold = goldRepository.findByGoldEnum(GoldEnum.GOLD_18K);
         }
 
         if(request.getTypeOfSub().toString().equals("DIAMOND")) {
-            sub = subRepository.findByTypeOfSub("DIAMOND");
+            sub = subRepository.findByTypeOfSub(TypeOfSub.DIAMOND);
         } else if(request.getTypeOfSub().toString().equals("MOISSANITE")) {
-            sub = subRepository.findByTypeOfSub("MOISSANITE");
+            sub = subRepository.findByTypeOfSub(TypeOfSub.MOISSANITE);
         }
         for(Product product: products) {
             productRepository.deleteById(product.getId());
@@ -151,7 +153,8 @@ public class ProductLineService {
     }
 
     public List<ProductLine> getAvailableProductLine() {
-        List<ProductLine> list = productLineRepository.findAvailableProductLines();
+        List<ProductLine> list;
+        list = productLineRepository.findAvailableProductLines();
         return list;
     }
     //mircoservice

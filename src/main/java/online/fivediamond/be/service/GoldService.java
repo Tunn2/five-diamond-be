@@ -6,9 +6,11 @@ import online.fivediamond.be.model.gold.GoldCreationRequest;
 import online.fivediamond.be.model.gold.GoldUpdateRequest;
 import online.fivediamond.be.repository.GoldRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class GoldService {
@@ -54,4 +56,12 @@ public class GoldService {
         return goldRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
 
+    @Scheduled(fixedRate = 100000)
+    public void updatePrice() {
+        Random random = new Random();
+        double changePercentage = 1 + (random.nextDouble() * 0.2 - 0.1);
+        double roundedPercentage = Math.round(changePercentage * 100.0) / 100.0;// Tạo giá trị trong khoảng 0.9 đến 1.1
+        System.out.println(roundedPercentage);
+        goldRepository.updatePrice(roundedPercentage);
+    }
 }

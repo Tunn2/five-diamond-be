@@ -26,11 +26,14 @@ public class Order {
     String note;
     String address;
     double totalAmount;
+    Date confirmDate;
+    Date processingDate;
     Date shippingDate;
+    Date deliveryDate;
     String imgConfirmUrl;
-
     int cannotContactTimes;
-
+    String reasonOne;
+    String reasonTwo;
     @JsonIgnore
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     CanceledOrder canceledOrder;
