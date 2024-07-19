@@ -59,8 +59,10 @@ public class GoldService {
     @Scheduled(fixedRate = 100000)
     public void updatePrice() {
         Random random = new Random();
-        double changePercentage = 1 + (random.nextDouble() * 0.2 - 0.1);
-        double roundedPercentage = Math.round(changePercentage * 100.0) / 100.0;// Tạo giá trị trong khoảng 0.9 đến 1.1
+        double min = 0.99;
+        double max = 1.01;
+        double changePercentage = min + (max - min) * random.nextDouble();
+        double roundedPercentage = Math.round(changePercentage * 1000.0) / 1000.0;
         System.out.println(roundedPercentage);
         goldRepository.updatePrice(roundedPercentage);
     }

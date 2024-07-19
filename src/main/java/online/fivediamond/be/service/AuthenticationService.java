@@ -59,10 +59,10 @@ public class AuthenticationService implements UserDetailsService {
         account.setPhone(registerRequest.getPhone());
         account.setAddress(registerRequest.getAddress());
         account.setGender(registerRequest.getGender());
-        account.setRankingMember(RankingMember.BRONZE);
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         account.setCreateAt(LocalDate.now());
         if(account.getRole() == Role.CUSTOMER) {
+            account.setRankingMember(RankingMember.BRONZE);
             Cart cart = new Cart();
             cart = cartRepository.save(cart);
             account.setCart(cart);
@@ -142,6 +142,7 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setRewardPoint(account.getRewardPoint());
             accountResponse.setAddress(account.getAddress());
             accountResponse.setCart(account.getCart());
+            accountResponse.setRankingMember(account.getRankingMember());
         } catch (FirebaseAuthException ex) {
             ex.printStackTrace();
         }
