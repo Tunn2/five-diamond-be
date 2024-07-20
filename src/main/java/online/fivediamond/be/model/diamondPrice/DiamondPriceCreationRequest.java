@@ -6,6 +6,6 @@ import lombok.Data;
 public class DiamondPriceCreationRequest {
     String size;
     String color;
-    String cut;
+    String clarity;
     String price;
 }

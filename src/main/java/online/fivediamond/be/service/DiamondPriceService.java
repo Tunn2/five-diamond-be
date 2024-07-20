@@ -22,7 +22,7 @@ public class DiamondPriceService {
         DiamondPrice diamondPrice = new DiamondPrice();
         diamondPrice.setSize(request.getSize());
         diamondPrice.setColor(request.getColor());
-        diamondPrice.setCut(request.getCut());
+        diamondPrice.setClarity(request.getClarity());
         diamondPrice.setPrice(request.getPrice());
         return diamondPriceRepository.save(diamondPrice);
     }

@@ -63,7 +63,6 @@ public class GoldService {
         double max = 1.01;
         double changePercentage = min + (max - min) * random.nextDouble();
         double roundedPercentage = Math.round(changePercentage * 1000.0) / 1000.0;
-        System.out.println(roundedPercentage);
         goldRepository.updatePrice(roundedPercentage);
     }
 }

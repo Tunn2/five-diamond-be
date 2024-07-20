@@ -16,6 +16,6 @@ public class DiamondPrice {
     long id;
     String size;
     String color;
-    String cut;
+    String clarity;
     String price;
 }
