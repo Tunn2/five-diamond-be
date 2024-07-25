@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WarrantyRepository extends JpaRepository<Warranty, Long> {
-    Warranty findByProductId(long id);
+
+
+    Warranty findByProductIdAndIsDeleteFalse(long id);
 }
