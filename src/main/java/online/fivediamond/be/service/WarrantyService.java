@@ -17,6 +17,6 @@ public class WarrantyService {
     }
 
     public Warranty getByProductId(long id) {
-        return warrantyRepository.findByProductId(id);
+        return warrantyRepository.findByProductIdAndIsDeleteFalse(id);
     }
 }
