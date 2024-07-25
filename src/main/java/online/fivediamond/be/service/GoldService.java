@@ -56,7 +56,7 @@ public class GoldService {
         return goldRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
 
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRate = 10000)
     public void updatePrice() {
         Random random = new Random();
         double min = 0.99;

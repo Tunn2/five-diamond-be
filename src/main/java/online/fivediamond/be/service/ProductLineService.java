@@ -93,10 +93,10 @@ public class ProductLineService {
 
     public ProductLine update(long id, ProductLineUpdateRequest request) {
         ProductLine productLine = productLineRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
-        List<Diamond> diamonds = diamondRepository.findAllById(request.getDiamondID());
         List<Product> products = productRepository.findByProductLineId(id);
         Gold gold = null;
         Sub sub = null;
+
         if (request.getKarat().equals("24K")) {
             gold = goldRepository.findByGoldEnum(GoldEnum.GOLD_24K);
         } else if (request.getKarat().equals("18K")) {
@@ -112,12 +112,9 @@ public class ProductLineService {
             productRepository.deleteById(product.getId());
         }
         double priceOfMetal = (gold.getPricePerTael() * request.getWeight()) + (sub.getPrice() * request.getQuantityOfSub());
-        double priceOfDiamond = diamonds.get(0).getPrice();
-
         productLine.setDescription(request.getDescription());
         productLine.setName(request.getName());
         productLine.setGender(request.getGender());
-        productLine.setPrice(priceOfMetal + priceOfDiamond);
         productLine.setPriceRate(request.getPriceRate());
         productLine.setMetal(request.getMetal());
         productLine.setKarat(request.getKarat());
@@ -126,22 +123,8 @@ public class ProductLineService {
         productLine.setImgURL(request.getImgURL());
         productLine.setTypeOfSub(request.getTypeOfSub());
         productLine.setQuantityOfSub(request.getQuantityOfSub());
-        productLine.setQuantity(diamonds.size());
         productLine.setSpecial(request.isSpecial());
-        productLine.setShape(request.getShape());
-        productLine.setCut(request.getCut());
-        productLine.setClarity(request.getClarity());
-        productLine.setColor(request.getColor());
-        productLine.setCarat(request.getCarat());
-        productLine.setSize(request.getSize());
-        productLine.setOrigin(request.getOrigin());
         productLine = productLineRepository.save(productLine);
-        for (Diamond diamond : diamonds) {
-            Product product = new Product();
-            product.setDiamond(diamond);
-            product.setProductLine(productLineRepository.findById(productLine.getId()).orElseThrow());
-            productRepository.save(product);
-        }
         return productLine;
 
     }

@@ -31,9 +31,10 @@ public class Product {
     @JoinColumn(name = "productLine_id")
     ProductLine productLine;
 
+
     @JsonIgnore
-    @OneToOne(mappedBy = "product",cascade = CascadeType.ALL)
-    OrderItem orderItem;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    Set<OrderItem> orderItems;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

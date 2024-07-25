@@ -165,7 +165,7 @@ public class AuthenticationService implements UserDetailsService {
         emailDetail.setSubject("Reset password for account: " + account.getEmail());
         emailDetail.setMsgBody("");
         emailDetail.setButtonValue("Reset password");
-        emailDetail.setLink("http://fivediamond/doi-mat-khau?token=" + tokenService.generateToken(account));
+        emailDetail.setLink("http://fivediamond.shop/doi-mat-khau?token=" + tokenService.generateToken(account));
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -195,7 +195,5 @@ public class AuthenticationService implements UserDetailsService {
         account.setDob(request.getDob());
         return authenticationRepository.save(account);
     }
-
-
 
 }

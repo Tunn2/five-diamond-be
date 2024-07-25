@@ -17,7 +17,7 @@ public interface GoldRepository extends JpaRepository<Gold, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE gold SET price_per_tael = price_per_tael * :price WHERE id > 0", nativeQuery = true)
+    @Query(value = "UPDATE gold SET price_per_tael = ROUND(price_per_tael * :price, -3) WHERE id > 0", nativeQuery = true)
     void updatePrice(@Param("price") double price);
     Gold findByGoldEnum(GoldEnum goldEnum);
 }
