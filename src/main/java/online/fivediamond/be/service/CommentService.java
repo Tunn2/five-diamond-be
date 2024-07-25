@@ -8,6 +8,7 @@ import online.fivediamond.be.repository.AuthenticationRepository;
 import online.fivediamond.be.repository.CommentRepository;
 import online.fivediamond.be.repository.ProductLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +25,9 @@ public class CommentService {
     @Autowired
     ProductLineRepository productLineRepository;
 
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
+
     public Comment create(CommentCreationRequest request) {
         Comment comment = new Comment();
         Account account = authenticationRepository.findById(request.getAccountId()).orElseThrow(() -> new RuntimeException("Not found"));
@@ -33,7 +37,9 @@ public class CommentService {
         comment.setContent(request.getContent());
         comment.setCreateAt(new Date().toString());
         comment.setDeleted(false);
-        return commentRepository.save(comment);
+        comment = commentRepository.save(comment);
+        simpMessagingTemplate.convertAndSend("/topic/comment","comment");
+        return comment;
     }
 
     public Comment delete(long id) {

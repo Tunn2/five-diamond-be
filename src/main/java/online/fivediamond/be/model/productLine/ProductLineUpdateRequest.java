@@ -21,13 +21,5 @@ public class ProductLineUpdateRequest {
     int quantityOfSub;
     boolean isSpecial;
     long categoryID;
-    List<Long> diamondID;
 
-    String shape;
-    String cut;
-    String color;
-    String clarity;
-    double carat;
-    double size;
-    Origin origin;
 }

@@ -1,5 +1,6 @@
 package online.fivediamond.be.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.fivediamond.be.model.dto.RechargeRequestDTO;
 import online.fivediamond.be.service.CartService;
 import online.fivediamond.be.service.WalletService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/wallet")
 @RestController
+@SecurityRequirement(name = "api")
 public class WalletAPI {
     @Autowired
     WalletService walletService;

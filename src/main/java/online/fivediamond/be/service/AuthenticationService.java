@@ -59,10 +59,10 @@ public class AuthenticationService implements UserDetailsService {
         account.setPhone(registerRequest.getPhone());
         account.setAddress(registerRequest.getAddress());
         account.setGender(registerRequest.getGender());
-        account.setRankingMember(RankingMember.BRONZE);
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         account.setCreateAt(LocalDate.now());
         if(account.getRole() == Role.CUSTOMER) {
+            account.setRankingMember(RankingMember.BRONZE);
             Cart cart = new Cart();
             cart = cartRepository.save(cart);
             account.setCart(cart);
@@ -142,6 +142,7 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setRewardPoint(account.getRewardPoint());
             accountResponse.setAddress(account.getAddress());
             accountResponse.setCart(account.getCart());
+            accountResponse.setRankingMember(account.getRankingMember());
         } catch (FirebaseAuthException ex) {
             ex.printStackTrace();
         }
@@ -164,7 +165,7 @@ public class AuthenticationService implements UserDetailsService {
         emailDetail.setSubject("Reset password for account: " + account.getEmail());
         emailDetail.setMsgBody("");
         emailDetail.setButtonValue("Reset password");
-        emailDetail.setLink("http://fivediamond/doi-mat-khau?token=" + tokenService.generateToken(account));
+        emailDetail.setLink("http://fivediamond.shop/doi-mat-khau?token=" + tokenService.generateToken(account));
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -194,7 +195,5 @@ public class AuthenticationService implements UserDetailsService {
         account.setDob(request.getDob());
         return authenticationRepository.save(account);
     }
-
-
 
 }

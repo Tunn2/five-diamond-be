@@ -73,12 +73,6 @@ public class OrderService {
             ProductLine productLine = item.getProductLine();
             List<Product> products = productRepository.findAvailableProducts(item.getQuantity(), productLine.getId());
 
-            //check available while making payment
-//            if (products.size() < item.getQuantity()) {
-//                orderRepository.deleteById(order.getId());
-//                throw new RuntimeException("Quantity of " + item.getProductLine().getName() + " in stock is not enough");
-//            }
-
             for (Product product : products) {
                 OrderItem orderItem = new OrderItem();
                 Warranty warranty = new Warranty();
@@ -124,6 +118,7 @@ public class OrderService {
         } else if (account.getRewardPoint() >= PLATINUM) {
             account.setRankingMember(RankingMember.PLATINUM);
         }
+
         authenticationRepository.save(account);
         order = orderRepository.save(order); // Save the order again to ensure it contains all order items
         return order;
@@ -184,6 +179,8 @@ public class OrderService {
             order.setConfirmDate(new Date());
         else if (request.getOrderStatus() == OrderStatus.SHIPPED)
             order.setShippingDate(new Date());
+        else if (request.getOrderStatus() == OrderStatus.PROCESSING)
+            order.setProcessingDate(new Date());
 
         return orderRepository.save(order);
     }
